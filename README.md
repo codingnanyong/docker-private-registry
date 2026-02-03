@@ -1,246 +1,246 @@
 # 🐳 Docker Private Registry Web Interface
 
-이 문서는 Docker Private Registry 웹 인터페이스에 대한 설명입니다.
+This document describes the Docker Private Registry web interface.
 
-## 📋 개요
+## 📋 Overview
 
-이 웹 인터페이스는 Docker Private Registry를 쉽게 관리하고 사용할 수 있도록 제공되는 웹 기반 도구입니다.
+This web interface is a web-based tool that makes it easy to manage and use Docker Private Registry.
 
-**접속 URL**: `http://{REGISTRY_WEB_HOST}:9000` (배포 시 실제 호스트로 교체)
+**Access URL**: `http://{REGISTRY_WEB_HOST}:9000` (replace with your actual host when deploying)
 
-## 🌐 주요 기능
+## 🌐 Key Features
 
-### 1. 홈 페이지 (`/`)
+### 1. Home Page (`/`)
 
-Registry 리소스 다운로드 서버의 메인 페이지입니다.
+The main page of the Registry resource download server.
 
-**제공 기능:**
+**Features:**
 
-- SSL/TLS 인증서 다운로드
-- 설치 및 설정 스크립트 다운로드
-- 문서 뷰어 접근
-- Registry 이미지 목록 보기
+- SSL/TLS certificate download
+- Install and setup script download
+- Document viewer access
+- Registry image list view
 
-### 2. 인증서 다운로드 (`/certs/`)
+### 2. Certificate Download (`/certs/`)
 
-Registry에 연결하기 위한 SSL 인증서를 다운로드할 수 있습니다.
+Download SSL certificates required to connect to the Registry.
 
-**다운로드 방법:**
+**Download methods:**
 
 ```bash
 curl http://{REGISTRY_WEB_HOST}:9000/certs/domain.crt -o domain.crt
 ```
 
-**또는 웹 브라우저에서:**
+**Or via web browser:**
 
-- `http://{REGISTRY_WEB_HOST}:9000/certs/` 접속
-- `domain.crt` 파일 다운로드
+- Visit `http://{REGISTRY_WEB_HOST}:9000/certs/`
+- Download the `domain.crt` file
 
-### 3. 스크립트 다운로드 (`/scripts/`)
+### 3. Script Download (`/scripts/`)
 
-Docker 설치 및 Registry 설정을 위한 자동화 스크립트를 다운로드할 수 있습니다.
+Download automation scripts for Docker installation and Registry configuration.
 
-**제공 스크립트:**
+**Available scripts:**
 
-- `install-docker.sh` - Docker 자동 설치 스크립트
-- `setup-docker-registry.sh` - Registry 설정 스크립트
+- `install-docker.sh` - Docker auto-install script
+- `setup-docker-registry.sh` - Registry setup script
 
-**다운로드 방법:**
+**Download methods:**
 
 ```bash
 curl http://{REGISTRY_WEB_HOST}:9000/scripts/install-docker.sh -o install-docker.sh
 curl http://{REGISTRY_WEB_HOST}:9000/scripts/setup-docker-registry.sh -o setup-docker-registry.sh
 ```
 
-### 4. 문서 뷰어 (`/docs-viewer.html`)
+### 4. Document Viewer (`/docs-viewer.html`)
 
-Registry 관련 모든 문서를 웹에서 확인할 수 있습니다.
+View all Registry-related documentation in the browser.
 
-**제공 문서:**
+**Available documents:**
 
-- `README.md` - 메인 가이드
-- `REGISTRY_USAGE_GUIDE.md` - Private Registry 사용법 가이드 ⭐
-- `DOCKER_INSTALL_GUIDE.md` - Docker 설치 가이드
-- `EXTERNAL_CLIENT_GUIDE.md` - 외부 클라이언트 설정 가이드
-- `CERT_DOWNLOAD_GUIDE.md` - 인증서 다운로드 가이드
+- `README.md` - Main guide
+- `REGISTRY_USAGE_GUIDE.md` - Private Registry usage guide ⭐
+- `DOCKER_INSTALL_GUIDE.md` - Docker installation guide
+- `EXTERNAL_CLIENT_GUIDE.md` - External client configuration guide
+- `CERT_DOWNLOAD_GUIDE.md` - Certificate download guide
 
-**접속 방법:**
+**Access:**
 
 - `http://{REGISTRY_WEB_HOST}:9000/docs-viewer.html`
-- 또는 홈 페이지에서 "View All Documentation" 버튼 클릭
+- Or click the "View All Documentation" button on the home page
 
-### 5. Registry 이미지 목록 (`/registry-list`)
+### 5. Registry Image List (`/registry-list`)
 
-Registry에 저장된 모든 Docker 이미지 목록을 확인하고 Dockerfile을 다운로드할 수 있습니다.
+View all Docker images stored in the Registry and download Dockerfiles.
 
-**주요 기능:**
+**Features:**
 
-- 이미지 목록 조회
-- 이미지 클릭 시 Dockerfile 다운로드
-- 이미지 정보 확인
-- Auto-refresh 기능 (30초마다 자동 새로고침)
-- 수동 새로고침 버튼
-- 실시간 새로고침 상태 표시
+- Image list query
+- Dockerfile download on image click
+- Image information view
+- Auto-refresh (every 30 seconds)
+- Manual refresh button
+- Real-time refresh status display
 
-**접속 방법:**
+**Access:**
 
 - `http://{REGISTRY_WEB_HOST}:9000/registry-list`
-- 또는 홈 페이지에서 "View Image List" 버튼 클릭
+- Or click the "View Image List" button on the home page
 
-**Auto-refresh 기능:**
+**Auto-refresh:**
 
-- 우측 상단의 토글 스위치로 자동 새로고침 ON/OFF 설정
-- 기본값: ON (30초마다 자동 새로고침)
-- 수동 새로고침 버튼 클릭 시 자동으로 OFF로 전환
+- Toggle switch in the top-right corner to enable/disable auto-refresh
+- Default: ON (auto-refresh every 30 seconds)
+- Clicking the manual refresh button automatically turns it OFF
 
-**Dockerfile 다운로드:**
+**Dockerfile download:**
 
-- 이미지 카드를 클릭하거나 "Download Dockerfile" 버튼 클릭
-- 파일명: `Dockerfile` (확장자 없음)
-- 자동으로 재구성된 Dockerfile을 브라우저에서 다운로드
+- Click an image card or the "Download Dockerfile" button
+- Filename: `Dockerfile` (no extension)
+- Regenerated Dockerfile is downloaded to your browser
 
-## 🔧 기술 스택
+## 🔧 Tech Stack
 
-- **웹 서버**: Nginx (Alpine)
-- **프론트엔드**: HTML5, CSS3, JavaScript (Vanilla)
-- **마크다운 렌더링**: Marked.js (CDN)
+- **Web server**: Nginx (Alpine)
+- **Frontend**: HTML5, CSS3, JavaScript (Vanilla)
+- **Markdown rendering**: Marked.js (CDN)
 - **Registry API**: Docker Registry API v2
 
-## 📁 디렉토리 구조
+## 📁 Directory Structure
 
 ```text
 registry/
-├── config/                 # 설정 파일
-│   ├── nginx-cert-server.conf  # Nginx 설정
-│   └── openssl-san.cnf        # OpenSSL 설정
-├── docs/                   # 문서
+├── config/                 # Configuration files
+│   ├── nginx-cert-server.conf  # Nginx config
+│   └── openssl-san.cnf        # OpenSSL config
+├── docs/                   # Documents
 │   ├── DOCKER_INSTALL_GUIDE.md
 │   ├── EXTERNAL_CLIENT_GUIDE.md
 │   └── CERT_DOWNLOAD_GUIDE.md
-├── scripts/                # 스크립트
+├── scripts/                # Scripts
 │   ├── install-docker.sh
 │   └── setup-docker-registry.sh
-├── web/                    # 웹 파일
-│   ├── css/                   # 스타일 시트
-│   │   ├── common.css            # 공통 스타일
-│   │   ├── registry-list.css     # 이미지 목록 페이지 스타일
-│   │   ├── docs-viewer.css       # 문서 뷰어 스타일
-│   │   ├── certs-index.css       # 인증서 페이지 스타일
-│   │   └── scripts-index.css     # 스크립트 페이지 스타일
-│   ├── js/                    # JavaScript 파일
-│   │   ├── common.js             # 공통 JavaScript
-│   │   ├── index.js              # 홈 페이지 JavaScript
-│   │   ├── registry-list.js      # 이미지 목록 페이지 JavaScript
-│   │   └── docs-viewer.js        # 문서 뷰어 JavaScript
-│   ├── index.html             # 홈 페이지
-│   ├── registry-list.html     # 이미지 목록 페이지
-│   ├── docs-viewer.html       # 문서 뷰어
-│   ├── certs-index.html       # 인증서 목록 페이지
-│   └── scripts-index.html     # 스크립트 목록 페이지
-├── LICENSE                 # 라이선스 파일
-├── README.md              # 웹 인터페이스 설명 (이 파일)
-└── docker-compose.yml      # Docker Compose 설정
+├── web/                    # Web files
+│   ├── css/                   # Stylesheets
+│   │   ├── common.css            # Common styles
+│   │   ├── registry-list.css     # Image list page styles
+│   │   ├── docs-viewer.css       # Document viewer styles
+│   │   ├── certs-index.css       # Certificate page styles
+│   │   └── scripts-index.css     # Script page styles
+│   ├── js/                    # JavaScript files
+│   │   ├── common.js             # Common JavaScript
+│   │   ├── index.js              # Home page JavaScript
+│   │   ├── registry-list.js      # Image list page JavaScript
+│   │   └── docs-viewer.js        # Document viewer JavaScript
+│   ├── index.html             # Home page
+│   ├── registry-list.html     # Image list page
+│   ├── docs-viewer.html       # Document viewer
+│   ├── certs-index.html       # Certificate list page
+│   └── scripts-index.html     # Script list page
+├── LICENSE                 # License file
+├── README.md              # Web interface description (this file)
+└── docker-compose.yml      # Docker Compose config
 ```
 
-## 🚀 시작하기
+## 🚀 Getting Started
 
-### 1. 웹 인터페이스 접속
+### 1. Access the Web Interface
 
-브라우저에서 다음 URL로 접속:
+Open the following URL in your browser:
 
 ```text
 http://{REGISTRY_WEB_HOST}:9000
 ```
 
-### 2. 인증서 다운로드
+### 2. Download Certificates
 
-1. 홈 페이지에서 "Browse Certificates Directory" 클릭
-2. 또는 직접 `/certs/` 경로 접속
-3. `domain.crt` 파일 다운로드
+1. Click "Browse Certificates Directory" on the home page
+2. Or visit the `/certs/` path directly
+3. Download the `domain.crt` file
 
-### 3. 스크립트 다운로드
+### 3. Download Scripts
 
-1. 홈 페이지에서 "Browse Scripts Directory" 클릭
-2. 또는 직접 `/scripts/` 경로 접속
-3. 필요한 스크립트 다운로드
+1. Click "Browse Scripts Directory" on the home page
+2. Or visit the `/scripts/` path directly
+3. Download the scripts you need
 
-### 4. 이미지 목록 확인
+### 4. View Image List
 
-1. 홈 페이지에서 "View Image List" 클릭
-2. Registry에 저장된 이미지 목록 확인
-3. 이미지 클릭하여 Dockerfile 다운로드
-4. 🗑️ Delete 버튼으로 불필요한 이미지 삭제 가능
+1. Click "View Image List" on the home page
+2. View the list of images stored in the Registry
+3. Click an image to download its Dockerfile
+4. Use the 🗑️ Delete button to remove unnecessary images
 
-### 5. Registry 사용법 (Push/Pull) ⭐
+### 5. Registry Usage (Push/Pull) ⭐
 
-**이미지 업로드:**
+**Upload image:**
 
 ```bash
-# 1. 이미지 태그
+# 1. Tag the image
 docker tag my-app:latest {REGISTRY_HOST}:5000/my-app:latest
 
-# 2. Registry로 업로드
+# 2. Push to Registry
 docker push {REGISTRY_HOST}:5000/my-app:latest
 ```
 
-**이미지 다운로드:**
+**Download image:**
 
 ```bash
-# Registry에서 이미지 다운로드
+# Pull image from Registry
 docker pull {REGISTRY_HOST}:5000/my-app:latest
 ```
 
-자세한 사용법은 [Registry 사용법 가이드](./docs/REGISTRY_USAGE_GUIDE.md)를 참고하세요.
+See [Registry Usage Guide](./docs/REGISTRY_USAGE_GUIDE.md) for detailed instructions.
 
-## 📖 문서 읽기
+## 📖 Reading Documentation
 
-1. 홈 페이지에서 "View All Documentation" 클릭
-2. 드롭다운에서 원하는 문서 선택
-3. 마크다운 형식으로 렌더링된 문서 확인
+1. Click "View All Documentation" on the home page
+2. Select the desired document from the dropdown
+3. View the document rendered in Markdown format
 
-## 🔗 관련 링크
+## 🔗 Related Links
 
 - **Registry URL**: `https://{REGISTRY_HOST}:5000`
-- **웹 인터페이스**: `http://{REGISTRY_WEB_HOST}:9000`
-- **인증서 다운로드**: `http://{REGISTRY_WEB_HOST}:9000/certs/`
-- **스크립트 다운로드**: `http://{REGISTRY_WEB_HOST}:9000/scripts/`
-- **이미지 목록**: `http://{REGISTRY_WEB_HOST}:9000/registry-list`
-- **문서 뷰어**: `http://{REGISTRY_WEB_HOST}:9000/docs-viewer.html`
+- **Web interface**: `http://{REGISTRY_WEB_HOST}:9000`
+- **Certificate download**: `http://{REGISTRY_WEB_HOST}:9000/certs/`
+- **Script download**: `http://{REGISTRY_WEB_HOST}:9000/scripts/`
+- **Image list**: `http://{REGISTRY_WEB_HOST}:9000/registry-list`
+- **Document viewer**: `http://{REGISTRY_WEB_HOST}:9000/docs-viewer.html`
 
-## 🔒 보안
+## 🔒 Security
 
-- SSL/TLS 인증서는 HTTPS를 통해 안전하게 제공됩니다
-- 개인키(`domain.key`)는 웹을 통해 제공되지 않습니다
-- 모든 리소스는 읽기 전용(ro)으로 마운트됩니다
+- SSL/TLS certificates are served securely over HTTPS
+- Private key (`domain.key`) is not exposed via the web
+- All resources are mounted read-only (ro)
 
-## 🛠️ 문제 해결
+## 🛠️ Troubleshooting
 
-### 페이지가 로드되지 않는 경우
+### Page fails to load
 
 ```bash
-# 컨테이너 상태 확인
+# Check container status
 docker ps | grep registry-cert-server
 
-# 컨테이너 재시작
+# Restart container
 docker restart registry-cert-server
 
-# 로그 확인
+# View logs
 docker logs registry-cert-server
 ```
 
-### API 요청이 실패하는 경우
+### API requests fail
 
 ```bash
-# Registry 서비스 상태 확인
+# Check Registry service status
 docker ps | grep registry
 
-# 네트워크 연결 확인
+# Verify network connectivity
 docker network inspect storage_network
 ```
 
-## 📚 추가 문서
+## 📚 Additional Documentation
 
-- [REGISTRY_USAGE_GUIDE.md](./docs/REGISTRY_USAGE_GUIDE.md) - **Private Registry 사용법 가이드** ⭐
-- [DOCKER_INSTALL_GUIDE.md](./docs/DOCKER_INSTALL_GUIDE.md) - Docker 설치 가이드
-- [EXTERNAL_CLIENT_GUIDE.md](./docs/EXTERNAL_CLIENT_GUIDE.md) - 외부 클라이언트 설정 가이드
-- [CERT_DOWNLOAD_GUIDE.md](./docs/CERT_DOWNLOAD_GUIDE.md) - 인증서 다운로드 가이드
+- [REGISTRY_USAGE_GUIDE.md](./docs/REGISTRY_USAGE_GUIDE.md) - **Private Registry Usage Guide** ⭐
+- [DOCKER_INSTALL_GUIDE.md](./docs/DOCKER_INSTALL_GUIDE.md) - Docker installation guide
+- [EXTERNAL_CLIENT_GUIDE.md](./docs/EXTERNAL_CLIENT_GUIDE.md) - External client configuration guide
+- [CERT_DOWNLOAD_GUIDE.md](./docs/CERT_DOWNLOAD_GUIDE.md) - Certificate download guide
