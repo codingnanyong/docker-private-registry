@@ -1,5 +1,11 @@
 # 🐳 Docker Private Registry Web Interface
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Docker](https://img.shields.io/badge/Docker-Registry-2496ED?logo=docker&logoColor=white)](https://www.docker.com/)
+[![Docker Compose](https://img.shields.io/badge/Docker%20Compose-supported-2496ED?logo=docker&logoColor=white)](https://docs.docker.com/compose/)
+[![Nginx](https://img.shields.io/badge/Nginx-Alpine-009639?logo=nginx&logoColor=white)](https://nginx.org/)
+[![Registry API](https://img.shields.io/badge/Registry%20API-v2-2496ED?logo=docker&logoColor=white)](https://docs.docker.com/registry/spec/api/)
+
 This document describes the Docker Private Registry web interface.
 
 ## 📋 Overview
