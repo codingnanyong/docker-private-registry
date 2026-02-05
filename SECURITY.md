@@ -13,7 +13,7 @@ If you discover a security vulnerability in this project, please report it respo
 ### How to Report
 
 1. **Do not** open a public issue for security vulnerabilities.
-2. Email the details to **codingnanyong@gmail.com** with the subject line: `[Security] <project name> - <brief description>`.
+2. Email the details to **<codingnanyong@gmail.com>** with the subject line: `[Security] <project name> - <brief description>`.
 3. Include:
    - Description of the vulnerability
    - Steps to reproduce
