@@ -1,0 +1,293 @@
+# Edge HMI: Private Registry 이미지 사용
+# 사용: REGISTRY=203.228.107.184:5000 IMAGE_TAG=v1.0.2 docker compose -f docker-compose.registry.yml up -d
+# db/.env 필요 (POSTGRES_DB, POSTGRES_USER, POSTGRES_PASSWORD)
+name: edge-hmi
+
+services:
+  db:
+    image: ${REGISTRY:-203.228.107.184:5000}/btx/edge-hmi-db:${IMAGE_TAG:-latest}
+    container_name: hmi-db-postgres
+    env_file: ./db/.env
+    environment:
+      - TZ=${TZ:-Asia/Seoul}
+      - POSTGRES_DB=${POSTGRES_DB:-edge_hmi}
+      - POSTGRES_USER=${POSTGRES_USER:-admin}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-1q2w3e4r}
+    ports:
+      - "5432:5432"
+    volumes:
+      - edge_hmi_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-admin} -d ${POSTGRES_DB:-edge_hmi}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  line_mst:
+    image: ${REGISTRY:-203.228.107.184:5000}/btx/edge-hmi-api-line-mst:${IMAGE_TAG:-latest}
+    container_name: hmi-api-line-mst
+    env_file: ./db/.env
+    environment:
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=${POSTGRES_DB:-edge_hmi}
+      - POSTGRES_USER=${POSTGRES_USER:-admin}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-1q2w3e4r}
+      - POSTGRES_SCHEMA=core
+    ports:
+      - "8001:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  equip_mst:
+    image: ${REGISTRY:-203.228.107.184:5000}/btx/edge-hmi-api-equip-mst:${IMAGE_TAG:-latest}
+    container_name: hmi-api-equip-mst
+    env_file: ./db/.env
+    environment:
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=${POSTGRES_DB:-edge_hmi}
+      - POSTGRES_USER=${POSTGRES_USER:-admin}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-1q2w3e4r}
+      - POSTGRES_SCHEMA=core
+    ports:
+      - "8002:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  sensor_mst:
+    image: ${REGISTRY:-203.228.107.184:5000}/btx/edge-hmi-api-sensor-mst:${IMAGE_TAG:-latest}
+    container_name: hmi-api-sensor-mst
+    env_file: ./db/.env
+    environment:
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=${POSTGRES_DB:-edge_hmi}
+      - POSTGRES_USER=${POSTGRES_USER:-admin}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-1q2w3e4r}
+      - POSTGRES_SCHEMA=core
+    ports:
+      - "8003:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  kpi_sum:
+    image: ${REGISTRY:-203.228.107.184:5000}/btx/edge-hmi-api-kpi-sum:${IMAGE_TAG:-latest}
+    container_name: hmi-api-kpi-sum
+    env_file: ./db/.env
+    environment:
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=${POSTGRES_DB:-edge_hmi}
+      - POSTGRES_USER=${POSTGRES_USER:-admin}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-1q2w3e4r}
+      - POSTGRES_SCHEMA=core
+    ports:
+      - "8004:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  worker_mst:
+    image: ${REGISTRY:-203.228.107.184:5000}/btx/edge-hmi-api-worker-mst:${IMAGE_TAG:-latest}
+    container_name: hmi-api-worker-mst
+    env_file: ./db/.env
+    environment:
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=${POSTGRES_DB:-edge_hmi}
+      - POSTGRES_USER=${POSTGRES_USER:-admin}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-1q2w3e4r}
+      - POSTGRES_SCHEMA=core
+    ports:
+      - "8005:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  shift_cfg:
+    image: ${REGISTRY:-203.228.107.184:5000}/btx/edge-hmi-api-shift-cfg:${IMAGE_TAG:-latest}
+    container_name: hmi-api-shift-cfg
+    env_file: ./db/.env
+    environment:
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=${POSTGRES_DB:-edge_hmi}
+      - POSTGRES_USER=${POSTGRES_USER:-admin}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-1q2w3e4r}
+      - POSTGRES_SCHEMA=core
+    ports:
+      - "8006:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  kpi_cfg:
+    image: ${REGISTRY:-203.228.107.184:5000}/btx/edge-hmi-api-kpi-cfg:${IMAGE_TAG:-latest}
+    container_name: hmi-api-kpi-cfg
+    env_file: ./db/.env
+    environment:
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=${POSTGRES_DB:-edge_hmi}
+      - POSTGRES_USER=${POSTGRES_USER:-admin}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-1q2w3e4r}
+      - POSTGRES_SCHEMA=core
+    ports:
+      - "8007:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  alarm_cfg:
+    image: ${REGISTRY:-203.228.107.184:5000}/btx/edge-hmi-api-alarm-cfg:${IMAGE_TAG:-latest}
+    container_name: hmi-api-alarm-cfg
+    env_file: ./db/.env
+    environment:
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=${POSTGRES_DB:-edge_hmi}
+      - POSTGRES_USER=${POSTGRES_USER:-admin}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-1q2w3e4r}
+      - POSTGRES_SCHEMA=core
+    ports:
+      - "8008:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  maint_cfg:
+    image: ${REGISTRY:-203.228.107.184:5000}/btx/edge-hmi-api-maint-cfg:${IMAGE_TAG:-latest}
+    container_name: hmi-api-maint-cfg
+    env_file: ./db/.env
+    environment:
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=${POSTGRES_DB:-edge_hmi}
+      - POSTGRES_USER=${POSTGRES_USER:-admin}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-1q2w3e4r}
+      - POSTGRES_SCHEMA=core
+    ports:
+      - "8009:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  measurement:
+    image: ${REGISTRY:-203.228.107.184:5000}/btx/edge-hmi-api-measurement:${IMAGE_TAG:-latest}
+    container_name: hmi-api-measurement
+    env_file: ./db/.env
+    environment:
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=${POSTGRES_DB:-edge_hmi}
+      - POSTGRES_USER=${POSTGRES_USER:-admin}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-1q2w3e4r}
+      - POSTGRES_SCHEMA=core
+    ports:
+      - "8010:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  status_his:
+    image: ${REGISTRY:-203.228.107.184:5000}/btx/edge-hmi-api-status-his:${IMAGE_TAG:-latest}
+    container_name: hmi-api-status-his
+    env_file: ./db/.env
+    environment:
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=${POSTGRES_DB:-edge_hmi}
+      - POSTGRES_USER=${POSTGRES_USER:-admin}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-1q2w3e4r}
+      - POSTGRES_SCHEMA=core
+    ports:
+      - "8011:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  prod_his:
+    image: ${REGISTRY:-203.228.107.184:5000}/btx/edge-hmi-api-prod-his:${IMAGE_TAG:-latest}
+    container_name: hmi-api-prod-his
+    env_file: ./db/.env
+    environment:
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=${POSTGRES_DB:-edge_hmi}
+      - POSTGRES_USER=${POSTGRES_USER:-admin}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-1q2w3e4r}
+      - POSTGRES_SCHEMA=core
+    ports:
+      - "8012:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  alarm_his:
+    image: ${REGISTRY:-203.228.107.184:5000}/btx/edge-hmi-api-alarm-his:${IMAGE_TAG:-latest}
+    container_name: hmi-api-alarm-his
+    env_file: ./db/.env
+    environment:
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=${POSTGRES_DB:-edge_hmi}
+      - POSTGRES_USER=${POSTGRES_USER:-admin}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-1q2w3e4r}
+      - POSTGRES_SCHEMA=core
+    ports:
+      - "8013:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  maint_his:
+    image: ${REGISTRY:-203.228.107.184:5000}/btx/edge-hmi-api-maint-his:${IMAGE_TAG:-latest}
+    container_name: hmi-api-maint-his
+    env_file: ./db/.env
+    environment:
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=${POSTGRES_DB:-edge_hmi}
+      - POSTGRES_USER=${POSTGRES_USER:-admin}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-1q2w3e4r}
+      - POSTGRES_SCHEMA=core
+    ports:
+      - "8014:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  shift_map:
+    image: ${REGISTRY:-203.228.107.184:5000}/btx/edge-hmi-api-shift-map:${IMAGE_TAG:-latest}
+    container_name: hmi-api-shift-map
+    env_file: ./db/.env
+    environment:
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=${POSTGRES_DB:-edge_hmi}
+      - POSTGRES_USER=${POSTGRES_USER:-admin}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-1q2w3e4r}
+      - POSTGRES_SCHEMA=core
+    ports:
+      - "8015:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  hmi-api:
+    image: ${REGISTRY:-203.228.107.184:5000}/btx/edge-hmi-api:${IMAGE_TAG:-latest}
+    container_name: hmi-api
+    environment:
+      - TABLE_SERVICE_PORT=8000
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+        
+volumes:
+  edge_hmi_data:

@@ -12,8 +12,7 @@ function copyRegistryUrl(event) {
         event.preventDefault();
     }
     
-    // 배포 시 index.html 또는 서버에서 window.REGISTRY_HOST 설정. 미설정 시 플레이스홀더 사용
-const url = (typeof window !== 'undefined' && window.REGISTRY_HOST) ? ('https://' + window.REGISTRY_HOST + ':5000') : 'https://REGISTRY_HOST:5000';
+    const url = 'https://203.228.107.184:5000';
     const copyButton = document.getElementById('copyButton');
     if (!copyButton) {
         console.error('Copy button not found');

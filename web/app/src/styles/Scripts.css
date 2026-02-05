@@ -1,0 +1,80 @@
+/* Scripts page - 구분·가독성 */
+
+.scripts-section {
+  margin: 28px 0;
+  padding: 24px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.scripts-section h3 {
+  margin: 0 0 20px 0;
+  padding-bottom: 12px;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1e293b;
+  border-bottom: 2px solid #667eea;
+}
+
+.script-item {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 20px 24px;
+  margin-bottom: 16px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  border-left: 4px solid #667eea;
+  transition: box-shadow 0.2s;
+}
+
+.script-item:last-child {
+  margin-bottom: 0;
+}
+
+.script-item:hover {
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.12);
+}
+
+.script-item .script-icon {
+  font-size: 28px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.script-item .script-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.script-item .script-name {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 6px;
+  font-family: 'Consolas', 'Monaco', monospace;
+}
+
+.script-item .script-desc {
+  font-size: 0.95rem;
+  color: #475569;
+  line-height: 1.5;
+  margin-bottom: 6px;
+}
+
+.script-item .script-size {
+  font-size: 0.8rem;
+  color: #64748b;
+  font-weight: 600;
+  display: inline-block;
+  padding: 2px 8px;
+  background: #e2e8f0;
+  border-radius: 4px;
+}
+
+.script-item .btn {
+  flex-shrink: 0;
+}

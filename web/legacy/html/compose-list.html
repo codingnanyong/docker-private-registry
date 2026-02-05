@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Docker Compose Files - Docker Registry</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🐳%3C/text%3E%3C/svg%3E">
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/compose-list.css?v=2">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🐳 Docker Compose Files</h1>
+            <p>Download Docker Compose configurations</p>
+            <p><a href="/">← Back to Home</a></p>
+        </div>
+        
+        <div class="content">
+            <div id="loading" class="loading">Loading compose files...</div>
+            <div id="error" class="error" style="display: none;"></div>
+            
+            <!-- Search Section -->
+            <div class="search-controls" style="display: none;">
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="🔍 Search compose files..." />
+                    <div class="search-stats" id="searchStats">
+                        <span id="searchCount">0</span> / <span id="totalCount">0</span> files
+                    </div>
+                </div>
+                <div class="env-notice">
+                    ⚠️ Create a <strong>.env</strong> file and set required environment variables before use.
+                </div>
+            </div>
+            
+            <div id="composeList" class="compose-list" style="display: none;"></div>
+            
+            <div class="back-link-container">
+                <a href="/" class="back-link">← Back to Home</a>
+            </div>
+        </div>
+    </div>
+    
+    <script src="/js/common.js"></script>
+    <script src="/js/compose-list.js"></script>
+</body>
+</html>

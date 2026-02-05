@@ -1,0 +1,21 @@
+# Example Docker Compose Configuration
+# This is a template file. Modify according to your needs.
+
+version: '3.8'
+
+services:
+  # Example service from private registry
+  app:
+    image: 203.228.107.184:5000/your-image:latest
+    container_name: example-app
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      - NODE_ENV=production
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

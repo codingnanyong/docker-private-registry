@@ -1,0 +1,49 @@
+/* Certs page */
+
+.certs-file-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 20px 0;
+}
+
+.certs-file-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+}
+
+.certs-file-icon {
+  font-size: 24px;
+  line-height: 1;
+}
+
+.certs-file-info {
+  flex: 1;
+}
+
+.certs-file-name {
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.certs-file-desc {
+  font-size: 0.9em;
+  color: #6c757d;
+  margin-top: 2px;
+}
+
+.certs-usage-code {
+  background: #f1f3f5;
+  padding: 8px 12px;
+  border-radius: 6px;
+  display: inline-block;
+  margin-top: 10px;
+  font-family: 'Consolas', 'Monaco', monospace;
+  font-size: 0.9em;
+  border: 1px solid #dee2e6;
+}
