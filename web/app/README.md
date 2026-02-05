@@ -9,7 +9,7 @@ npm install
 npm run dev
 ```
 
-Open [http://localhost:5173] (API, certs, scripts, docs, and docker endpoints require the real server or a proxy).
+Open http://localhost:5173 (API, certs, scripts, docs, and docker endpoints require the real server or a proxy).
 
 ## 🐳 Production (Docker)
 
