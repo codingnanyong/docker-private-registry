@@ -1,33 +1,30 @@
 @echo off
-REM Docker Desktop Installation Script for Windows
+REM Windows용 Docker Desktop 설치 스크립트
 setlocal EnableDelayedExpansion
 
-echo Docker Desktop Installation for Windows
-echo ========================================
+echo Windows Docker Desktop 설치
+echo ===========================
 
-REM Check admin rights
 net session >nul 2>&1
 if %errorlevel% neq 0 (
-    echo ERROR: Run as Administrator required!
+    echo 오류: 관리자 권한으로 실행하세요!
     pause
     exit /b 1
 )
 
-REM Check Windows version  
 for /f "tokens=4-5 delims=. " %%i in ('ver') do set VERSION=%%i.%%j
 if "%VERSION%" lss "10.0" (
-    echo ERROR: Windows 10+ required!
+    echo 오류: Windows 10 이상 필요!
     pause
     exit /b 1
 )
 
-REM Check WSL2
 wsl --status >nul 2>&1
 if %errorlevel% neq 0 (
-    echo Installing WSL2...
+    echo WSL2 설치 중...
     dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
     dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
-    echo WSL2 installed. Reboot required!
+    echo WSL2 설치됨. 재부팅 필요!
     pause
     shutdown /r /t 10
     exit /b 0
@@ -35,31 +32,29 @@ if %errorlevel% neq 0 (
 
 wsl --set-default-version 2 >nul 2>&1
 
-REM Check existing Docker
 docker --version >nul 2>&1
 if %errorlevel% equ 0 (
-    echo Docker already installed!
+    echo Docker가 이미 설치되어 있습니다.
     docker --version
     goto :setup_registry
 )
 
-REM Download and install Docker Desktop
 set TEMP_DIR=%TEMP%\docker-install
 mkdir "%TEMP_DIR%" 2>nul
 cd /d "%TEMP_DIR%"
 
-echo Downloading Docker Desktop...
+echo Docker Desktop 다운로드 중...
 curl -L "https://desktop.docker.com/win/main/amd64/Docker%%20Desktop%%20Installer.exe" -o "DockerDesktopInstaller.exe"
 if %errorlevel% neq 0 (
-    echo Download failed! Check internet connection.
+    echo 다운로드 실패! 인터넷 연결을 확인하세요.
     pause
     exit /b 1
 )
 
-echo Installing Docker Desktop...
+echo Docker Desktop 설치 중...
 start /wait "" "DockerDesktopInstaller.exe" install --quiet
 if %errorlevel% neq 0 (
-    echo Installation failed!
+    echo 설치 실패!
     pause
     exit /b 1
 )
@@ -67,10 +62,9 @@ if %errorlevel% neq 0 (
 cd /d %~dp0
 rmdir /s /q "%TEMP_DIR%" 2>nul
 
-echo Starting Docker Desktop...
+echo Docker Desktop 시작 중...
 start "" "C:\Program Files\Docker\Docker\Docker Desktop.exe"
 
-echo Waiting for Docker...
 set RETRY_COUNT=0
 :wait_docker
 timeout /t 10 /nobreak >nul
@@ -79,45 +73,45 @@ if %errorlevel% equ 0 goto :docker_ready
 set /a RETRY_COUNT+=1
 if %RETRY_COUNT% lss 30 goto :wait_docker
 
-echo Docker start timeout! Check manually.
+echo Docker 시작 대기 시간 초과. 수동 확인하세요.
 pause
 exit /b 1
 
 :docker_ready
-echo Docker ready!
+echo Docker 준비됨!
 
 :setup_registry
-echo Registry Configuration
-echo =====================
+echo Registry 설정
+echo =============
 
 set REGISTRY_DIR=%USERPROFILE%\docker-registry
 mkdir "%REGISTRY_DIR%\certs" 2>nul
 
-echo Downloading certificate...
+echo 인증서 다운로드 중...
 cd /d "%REGISTRY_DIR%\certs"
-curl -k https://%REGISTRY_HOST%:9000/certs/domain.crt -o domain.crt
+curl -k https://203.228.107.184:9000/certs/domain.crt -o domain.crt
 if %errorlevel% neq 0 (
-    echo Certificate download failed!
+    echo 인증서 다운로드 실패!
     pause
     exit /b 1
 )
 
-echo Installing certificate...
+echo 인증서 설치 중...
 certlm.msc -import domain.crt -s Root >nul 2>&1
 
-echo Testing Docker...
+echo Docker 테스트...
 docker run hello-world >nul 2>&1
 
-echo Testing registry...
+echo Registry 테스트...
 docker pull alpine:latest >nul 2>&1
-docker tag alpine:latest %REGISTRY_HOST%:5000/test-image:latest >nul 2>&1
-docker push %REGISTRY_HOST%:5000/test-image:latest >nul 2>&1
+docker tag alpine:latest 203.228.107.184:5000/test-image:latest >nul 2>&1
+docker push 203.228.107.184:5000/test-image:latest >nul 2>&1
 
 echo.
-echo Installation Complete!
-echo =====================
-echo Registry: https://%REGISTRY_HOST%:5000
-echo Web UI: http://%REGISTRY_HOST%:9000
-echo Cert: %REGISTRY_DIR%\certs\domain.crt
+echo 설치 완료!
+echo ==========
+echo Registry: https://203.228.107.184:5000
+echo Web UI: http://203.228.107.184:9000
+echo 인증서: %REGISTRY_DIR%\certs\domain.crt
 echo.
 pause

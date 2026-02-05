@@ -1,18 +1,18 @@
 @echo off
-REM Docker Registry Configuration Script for Windows
+REM Windows용 Docker Registry 설정 스크립트
 setlocal EnableDelayedExpansion
 
-echo Docker Registry Configuration
-echo =============================
+echo Docker Registry 설정
+echo ====================
 
 docker --version >nul 2>&1
 if %errorlevel% neq 0 (
-    echo Docker not found! Install Docker first.
+    echo Docker를 찾을 수 없습니다. 먼저 Docker를 설치하세요.
     pause
     exit /b 1
 )
 
-set REGISTRY_HOST=your-registry-host
+set REGISTRY_HOST=203.228.107.184
 set REGISTRY_PORT=5000
 set REGISTRY_URL=%REGISTRY_HOST%:%REGISTRY_PORT%
 set REGISTRY_DIR=%USERPROFILE%\docker-registry
@@ -20,19 +20,19 @@ set REGISTRY_DIR=%USERPROFILE%\docker-registry
 mkdir "%REGISTRY_DIR%\certs" 2>nul
 mkdir "%REGISTRY_DIR%\scripts" 2>nul
 
-echo Downloading certificate...
+echo 인증서 다운로드 중...
 cd /d "%REGISTRY_DIR%\certs"
 curl -k -L http://%REGISTRY_HOST%:9000/certs/domain.crt -o domain.crt
 if %errorlevel% neq 0 (
-    echo Certificate download failed!
+    echo 인증서 다운로드 실패!
     pause
     exit /b 1
 )
 
-echo Installing certificate...
+echo 인증서 설치 중...
 certlm.msc -import domain.crt -s Root >nul 2>&1 || powershell -Command "Import-Certificate -FilePath './domain.crt' -CertStoreLocation Cert:\CurrentUser\Root" >nul 2>&1
 
-echo Configuring Docker daemon...
+echo Docker daemon 설정 중...
 set DAEMON_JSON=%USERPROFILE%\.docker\daemon.json
 mkdir "%USERPROFILE%\.docker" 2>nul
 if exist "%DAEMON_JSON%" copy "%DAEMON_JSON%" "%DAEMON_JSON%.backup" >nul 2>&1
@@ -41,7 +41,7 @@ if exist "%DAEMON_JSON%" copy "%DAEMON_JSON%" "%DAEMON_JSON%.backup" >nul 2>&1
 echo {"insecure-registries":["%REGISTRY_URL%"]}
 ) > "%DAEMON_JSON%"
 
-echo Restarting Docker...
+echo Docker 재시작 중...
 taskkill /f /im "Docker Desktop.exe" >nul 2>&1
 timeout /t 3 /nobreak >nul
 start "" "C:\Program Files\Docker\Docker\Docker Desktop.exe"
@@ -53,16 +53,16 @@ docker info >nul 2>&1
 if %errorlevel% equ 0 goto :docker_ready
 set /a RETRY_COUNT+=1
 if %RETRY_COUNT% lss 20 goto :wait_docker_restart
-echo Docker restart timeout! Continue manually.
+echo Docker 재시작 대기 시간 초과. 수동으로 확인하세요.
 
 :docker_ready
 
-echo Testing registry...
+echo Registry 테스트 중...
 docker pull alpine:latest >nul 2>&1
 docker tag alpine:latest %REGISTRY_URL%/test:latest >nul 2>&1
 docker push %REGISTRY_URL%/test:latest >nul 2>&1
 
-echo Creating shortcuts...
+echo 바로가기 생성 중...
 cd /d "%REGISTRY_DIR%\scripts"
 
 echo @echo off > test-registry.bat
@@ -76,11 +76,11 @@ echo [InternetShortcut] > "%SHORTCUT_PATH%"
 echo URL=http://%REGISTRY_HOST%:9000 >> "%SHORTCUT_PATH%"
 
 echo.
-echo Configuration Complete!
-echo ========================
+echo 설정 완료!
+echo ===========
 echo Registry: https://%REGISTRY_URL%
 echo Web UI: http://%REGISTRY_HOST%:9000
-echo Config: %DAEMON_JSON%
-echo Test: %REGISTRY_DIR%\scripts\test-registry.bat
+echo 설정: %DAEMON_JSON%
+echo 테스트: %REGISTRY_DIR%\scripts\test-registry.bat
 echo.
 pause

@@ -6,7 +6,7 @@ set -e
 
 if [ "$EUID" -ne 0 ]; then 
     echo "❌ 이 스크립트는 sudo 권한이 필요합니다"
-    echo "   실행: sudo ./scripts/install-docker.sh"
+    echo "   실행: sudo ./install-docker_KR.sh"
     exit 1
 fi
 
@@ -95,7 +95,6 @@ fi
 echo ""
 echo "🧪 Docker 테스트 중..."
 if systemctl is-active --quiet docker; then
-    # docker 그룹에 속한 경우에만 테스트 (root가 아닌 경우)
     if groups | grep -q docker || [ "$EUID" -eq 0 ]; then
         docker run --rm hello-world && echo "✅ Docker 테스트 성공!" || echo "⚠️  Docker 테스트 실패 (그룹 변경 후 다시 시도하세요)"
     else
@@ -113,7 +112,7 @@ echo "✅ Docker 설치 및 설정 완료!"
 echo ""
 echo "📝 다음 단계:"
 echo "1. (선택) Docker Registry 설정:"
-echo "   sudo ./scripts/setup-docker-registry.sh"
+echo "   sudo ./setup-docker-registry_KR.sh"
 echo ""
 echo "2. 그룹 변경사항 적용 (새 터미널 또는 로그아웃/재로그인):"
 echo "   newgrp docker"

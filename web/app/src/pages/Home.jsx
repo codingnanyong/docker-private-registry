@@ -100,17 +100,18 @@ export default function Home() {
         <div className="download-box">
           <strong>Install Docker:</strong>
           <br />
-          Linux/macOS: <code>curl {curlBase}/scripts/install-docker.sh -o install-docker.sh</code>
+          Linux/macOS: <code>curl {curlBase}/scripts/KOR/install-docker.sh -o install-docker.sh</code>
           <br />
-          Windows: <code>curl {curlBase}/scripts/install-docker-windows.bat -o install-docker-windows.bat</code>
+          Windows: <code>curl {curlBase}/scripts/KOR/install-docker-windows.bat -o install-docker-windows.bat</code>
         </div>
         <div className="download-box">
           <strong>Setup Registry:</strong>
           <br />
-          Linux/macOS: <code>curl {curlBase}/scripts/setup-docker-registry.sh -o setup.sh</code>
+          Linux/macOS: <code>curl {curlBase}/scripts/KOR/setup-docker-registry.sh -o setup.sh</code>
           <br />
-          Windows: <code>curl {curlBase}/scripts/setup-docker-registry-windows.bat -o setup.bat</code>
+          Windows: <code>curl {curlBase}/scripts/KOR/setup-docker-registry-windows.bat -o setup.bat</code>
         </div>
+        <p className="script-lang-hint">Use <code>KOR</code> or <code>ENG</code> in the path for Korean or English scripts (e.g. <code>/scripts/ENG/</code>).</p>
         <Link to="/scripts" className="btn btn-secondary">Browse Scripts Directory</Link>
       </div>
 

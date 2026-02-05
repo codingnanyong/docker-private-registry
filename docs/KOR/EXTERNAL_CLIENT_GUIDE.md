@@ -11,39 +11,38 @@
 ## 🔐 Registry 정보
 
 - **Registry URL**: `https://{REGISTRY_HOST}:5000`
-- **인증서 위치**: 이 저장소의 `domain.crt` 파일
-- **접근 방법**: Git 저장소에서 직접 사용
+- **인증서 다운로드**: `http://{REGISTRY_HOST}:9000/certs/domain.crt`
+- **인증서 위치**: Registry 서버에서 웹으로 다운로드 또는 Git 저장소에서 직접 사용
 
 ## 🐧 Linux 클라이언트 설정
 
-### 1. Docker 설치 (Linux, 아직 설치되지 않은 경우)
+### 1. Docker 설치 확인
+
+Docker가 설치되어 있는지 확인:
 
 ```bash
-sudo apt update
-sudo apt install docker.io
-sudo systemctl start docker
-sudo usermod -aG docker $USER
-# 로그아웃 후 다시 로그인 필요
+docker --version
 ```
 
-### 2. Registry 인증서 준비 (Linux)
+Docker가 설치되지 않은 경우: **[DOCKER_INSTALL_GUIDE](./DOCKER_INSTALL_GUIDE.md)** 참조
 
+### 2. Registry 인증서 준비
+
+인증서 다운로드 방법: **[CERT_DOWNLOAD_GUIDE](./CERT_DOWNLOAD_GUIDE.md)** 참조
+
+**빠른 다운로드:**
 ```bash
-# 현재 디렉토리에 인증서가 있는지 확인
-ls -la domain.crt
-
-# 또는 다른 위치에서 작업하는 경우 인증서 복사
-cp domain.crt ./
+curl http://203.228.107.184:9000/certs/domain.crt -o domain.crt
 ```
 
-### 3. 인증서 설치 (Linux)
+### 3. 인증서 설치
 
 ```bash
 sudo cp domain.crt /usr/local/share/ca-certificates/registry.crt
 sudo update-ca-certificates
 ```
 
-### 4. Docker 데몬 설정 (Linux)
+### 4. Docker 데몬 설정
 
 ```bash
 sudo mkdir -p /etc/docker
@@ -51,24 +50,23 @@ sudo nano /etc/docker/daemon.json
 ```
 
 다음 내용을 추가하세요:
-
 ```json
 {
   "insecure-registries": ["{REGISTRY_HOST}:5000"]
 }
 ```
 
-### 5. Docker 재시작 (Linux)
+### 5. Docker 재시작
 
 ```bash
 sudo systemctl restart docker
 ```
 
-### 6. 연결 테스트 (Linux)
+### 6. 연결 테스트
 
 ```bash
 # Registry 카탈로그 확인
-curl https://{REGISTRY_HOST}:5000/v2/_catalog
+curl --cacert https://{REGISTRY_HOST}:5000/v2/_catalog
 
 # 이미지 다운로드 테스트
 docker pull {REGISTRY_HOST}:5000/your-image
@@ -76,11 +74,23 @@ docker pull {REGISTRY_HOST}:5000/your-image
 
 ## 🪟 Windows 클라이언트 설정
 
-### 1. Docker Desktop 설치 (Windows)
+### 1. Docker Desktop 설치
 
 - [Docker Desktop](https://www.docker.com/products/docker-desktop/) 다운로드 및 설치
 
-### 2. Registry 인증서 준비 (Windows)
+### 2. Registry 인증서 준비
+
+**방법 1: 웹에서 다운로드 (권장)**
+
+```powershell
+# Registry 서버에서 인증서 다운로드
+Invoke-WebRequest -Uri "http://{REGISTRY_HOST}:9000/certs/domain.crt" -OutFile "domain.crt"
+
+# 예시 (203.228.107.184 서버의 경우)
+Invoke-WebRequest -Uri "http://203.228.107.184:9000/certs/domain.crt" -OutFile "domain.crt"
+```
+
+**방법 2: Git 저장소에서 사용**
 
 ```powershell
 # 현재 디렉토리에 인증서가 있는지 확인
@@ -90,7 +100,7 @@ dir domain.crt
 copy domain.crt .\
 ```
 
-### 3. 인증서 설치 (Windows)
+### 3. 인증서 설치
 
 ```powershell
 # 관리자 권한으로 PowerShell 실행
@@ -100,7 +110,7 @@ certutil -addstore -f "ROOT" domain.crt
 certutil -addstore -f "ROOT" domain.crt
 ```
 
-### 4. Docker Desktop 설정 (Windows)
+### 4. Docker Desktop 설정
 
 1. Docker Desktop 열기
 2. Settings → Docker Engine로 이동
@@ -112,13 +122,13 @@ certutil -addstore -f "ROOT" domain.crt
 }
 ```
 
-1. Apply & Restart 클릭
+4. Apply & Restart 클릭
 
-### 5. 연결 테스트 (Windows)
+### 5. 연결 테스트
 
 ```cmd
 # Registry 카탈로그 확인
-curl -k https://{REGISTRY_HOST}:5000/v2/_catalog
+curl --cacert https://{REGISTRY_HOST}:5000/v2/_catalog
 
 # 이미지 다운로드 테스트
 docker pull {REGISTRY_HOST}:5000/your-image
@@ -196,11 +206,16 @@ sudo usermod -aG docker $USER
 
 이 가이드에서 사용되는 변수들을 사용자의 환경에 맞게 설정하세요:
 
-- `{REGISTRY_HOST}`: Registry 서버 IP 주소 또는 도메인 (예: `your-registry.example.com`)
+- `{REGISTRY_HOST}`: Registry 서버 IP 주소 또는 도메인 (예: `203.228.107.184`)
 
 ## 📁 인증서 파일
 
-이 저장소에는 이미 `domain.crt` 파일이 포함되어 있습니다. 별도로 인증서를 다운로드할 필요 없이 이 파일을 사용하세요.
+인증서는 다음 방법으로 얻을 수 있습니다:
+
+1. **웹에서 다운로드 (권장)**: `http://{REGISTRY_HOST}:9000/certs/domain.crt`
+2. **Git 저장소에서 사용**: 이 저장소에 포함된 `domain.crt` 파일
+
+자세한 내용은 **[CERT_DOWNLOAD_GUIDE](./CERT_DOWNLOAD_GUIDE.md)** 파일을 참조하세요.
 
 ## 📞 지원
 

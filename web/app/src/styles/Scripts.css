@@ -1,4 +1,45 @@
-/* Scripts page - 구분·가독성 */
+/* Scripts page */
+
+.scripts-lang-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.scripts-lang-label {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #475569;
+}
+
+.scripts-lang-buttons {
+  display: flex;
+  gap: 6px;
+}
+
+.scripts-lang-btn {
+  padding: 8px 14px;
+  border: 2px solid #cbd5e1;
+  border-radius: 8px;
+  background: #fff;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #64748b;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s, color 0.2s;
+}
+
+.scripts-lang-btn:hover {
+  border-color: #667eea;
+  color: #667eea;
+}
+
+.scripts-lang-btn.active {
+  border-color: #667eea;
+  background: #667eea;
+  color: #fff;
+}
 
 .scripts-section {
   margin: 28px 0;

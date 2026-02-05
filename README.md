@@ -47,18 +47,19 @@ curl http://{REGISTRY_WEB_HOST}:9000/certs/domain.crt -o domain.crt
 
 Download automation scripts for Docker installation and Registry configuration.
 
-**Available scripts:**
+**Available scripts (in `KOR/` or `ENG/` folder):**
 
-- `install-docker.sh` – Docker auto-install script (Linux/macOS)
-- `setup-docker-registry.sh` – Registry setup script (Linux/macOS)
-- `install-docker-windows.bat` – Docker Desktop install (Windows)
-- `setup-docker-registry-windows.bat` – Registry setup (Windows)
+- `KOR/install-docker.sh` / `ENG/install-docker.sh` – Docker auto-install (Linux/macOS)
+- `KOR/setup-docker-registry.sh` / `ENG/setup-docker-registry.sh` – Registry setup (Linux/macOS)
+- `KOR/install-docker-windows.bat` / `ENG/install-docker-windows.bat` – Docker Desktop install (Windows)
+- `KOR/setup-docker-registry-windows.bat` / `ENG/setup-docker-registry-windows.bat` – Registry setup (Windows)
 
 **Download methods:**
 
 ```bash
-curl http://{REGISTRY_WEB_HOST}:9000/scripts/install-docker.sh -o install-docker.sh
-curl http://{REGISTRY_WEB_HOST}:9000/scripts/setup-docker-registry.sh -o setup-docker-registry.sh
+# Korean (KOR) or English (ENG) folder
+curl http://{REGISTRY_WEB_HOST}:9000/scripts/KOR/install-docker.sh -o install-docker.sh
+curl http://{REGISTRY_WEB_HOST}:9000/scripts/KOR/setup-docker-registry.sh -o setup-docker-registry.sh
 ```
 
 ### 4. Document Viewer (`/docs`)
@@ -67,11 +68,11 @@ View all Registry-related documentation in the browser.
 
 **Available documents:**
 
-- `DOCKER_BASICS_GUIDE.md` – Docker & Docker Compose basics
-- `DOCKER_INSTALL_GUIDE.md` – Docker installation guide
-- `CERT_DOWNLOAD_GUIDE.md` – Certificate download guide
-- `EXTERNAL_CLIENT_GUIDE.md` – External client configuration guide
-- `REGISTRY_USAGE_GUIDE.md` – Private Registry usage guide ⭐
+- `DOCKER_BASICS_GUIDE_KR.md` / `DOCKER_BASICS_GUIDE_EN.md` – Docker & Docker Compose basics
+- `DOCKER_INSTALL_GUIDE_KR.md` / `DOCKER_INSTALL_GUIDE_EN.md` – Docker installation guide
+- `CERT_DOWNLOAD_GUIDE_KR.md` / `CERT_DOWNLOAD_GUIDE_EN.md` – Certificate download guide
+- `EXTERNAL_CLIENT_GUIDE_KR.md` / `EXTERNAL_CLIENT_GUIDE_EN.md` – External client configuration guide
+- `REGISTRY_USAGE_GUIDE_KR.md` / `REGISTRY_USAGE_GUIDE_EN.md` – Private Registry usage guide ⭐
 
 **Access:**
 
@@ -132,16 +133,29 @@ registry/
 │   ├── nginx-cert-server.conf  # Nginx config for cert-server
 │   └── openssl-san.cnf         # OpenSSL SAN config
 ├── docs/                       # Markdown documents (served at /docs/)
-│   ├── DOCKER_BASICS_GUIDE.md
-│   ├── DOCKER_INSTALL_GUIDE.md
-│   ├── EXTERNAL_CLIENT_GUIDE.md
-│   ├── CERT_DOWNLOAD_GUIDE.md
-│   └── REGISTRY_USAGE_GUIDE.md
+│   ├── KOR/                    # Korean
+│   │   ├── DOCKER_BASICS_GUIDE.md
+│   │   ├── DOCKER_INSTALL_GUIDE.md
+│   │   ├── CERT_DOWNLOAD_GUIDE.md
+│   │   ├── EXTERNAL_CLIENT_GUIDE.md
+│   │   └── REGISTRY_USAGE_GUIDE.md
+│   └── ENG/                    # English
+│       ├── DOCKER_BASICS_GUIDE.md
+│       ├── DOCKER_INSTALL_GUIDE.md
+│       ├── CERT_DOWNLOAD_GUIDE.md
+│       ├── EXTERNAL_CLIENT_GUIDE.md
+│       └── REGISTRY_USAGE_GUIDE.md
 ├── scripts/                    # Scripts (served at /scripts/)
-│   ├── install-docker.sh
-│   ├── setup-docker-registry.sh
-│   ├── install-docker-windows.bat
-│   └── setup-docker-registry-windows.bat
+│   ├── KOR/                    # Korean
+│   │   ├── install-docker.sh
+│   │   ├── setup-docker-registry.sh
+│   │   ├── install-docker-windows.bat
+│   │   └── setup-docker-registry-windows.bat
+│   └── ENG/                    # English
+│       ├── install-docker.sh
+│       ├── setup-docker-registry.sh
+│       ├── install-docker-windows.bat
+│       └── setup-docker-registry-windows.bat
 ├── web/                        # Web application
 │   ├── app/                    # React app (Vite build → served as SPA)
 │   │   ├── src/
@@ -218,7 +232,7 @@ docker push {REGISTRY_HOST}:5000/my-app:latest
 docker pull {REGISTRY_HOST}:5000/my-app:latest
 ```
 
-See [Registry Usage Guide](./docs/REGISTRY_USAGE_GUIDE.md) for detailed instructions.
+See [Registry Usage Guide](./docs/REGISTRY_USAGE_GUIDE_KR.md) (Korean) or [REGISTRY_USAGE_GUIDE_EN.md](./docs/REGISTRY_USAGE_GUIDE_EN.md) (English) for detailed instructions.
 
 ## 📖 Reading Documentation
 
@@ -268,8 +282,8 @@ docker network inspect storage_network
 
 ## 📚 Additional Documentation
 
-- [REGISTRY_USAGE_GUIDE.md](./docs/REGISTRY_USAGE_GUIDE.md) – **Private Registry Usage Guide** ⭐
-- [DOCKER_BASICS_GUIDE.md](./docs/DOCKER_BASICS_GUIDE.md) – Docker & Docker Compose basics
-- [DOCKER_INSTALL_GUIDE.md](./docs/DOCKER_INSTALL_GUIDE.md) – Docker installation guide
-- [EXTERNAL_CLIENT_GUIDE.md](./docs/EXTERNAL_CLIENT_GUIDE.md) – External client configuration guide
-- [CERT_DOWNLOAD_GUIDE.md](./docs/CERT_DOWNLOAD_GUIDE.md) – Certificate download guide
+- [REGISTRY_USAGE_GUIDE_KR.md](./docs/REGISTRY_USAGE_GUIDE_KR.md) / [REGISTRY_USAGE_GUIDE_EN.md](./docs/REGISTRY_USAGE_GUIDE_EN.md) – **Private Registry Usage Guide** ⭐
+- [DOCKER_BASICS_GUIDE_KR.md](./docs/DOCKER_BASICS_GUIDE_KR.md) / [DOCKER_BASICS_GUIDE_EN.md](./docs/DOCKER_BASICS_GUIDE_EN.md) – Docker & Docker Compose basics
+- [DOCKER_INSTALL_GUIDE_KR.md](./docs/DOCKER_INSTALL_GUIDE_KR.md) / [DOCKER_INSTALL_GUIDE_EN.md](./docs/DOCKER_INSTALL_GUIDE_EN.md) – Docker installation guide
+- [EXTERNAL_CLIENT_GUIDE_KR.md](./docs/EXTERNAL_CLIENT_GUIDE_KR.md) / [EXTERNAL_CLIENT_GUIDE_EN.md](./docs/EXTERNAL_CLIENT_GUIDE_EN.md) – External client configuration guide
+- [CERT_DOWNLOAD_GUIDE_KR.md](./docs/CERT_DOWNLOAD_GUIDE_KR.md) / [CERT_DOWNLOAD_GUIDE_EN.md](./docs/CERT_DOWNLOAD_GUIDE_EN.md) – Certificate download guide

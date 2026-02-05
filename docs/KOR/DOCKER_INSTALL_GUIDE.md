@@ -15,8 +15,8 @@
 Registry 서버에서 제공하는 자동 설치 스크립트를 사용할 수 있습니다:
 
 ```bash
-# 스크립트 다운로드
-curl http://{REGISTRY_HOST}:9000/scripts/install-docker.sh -o install-docker.sh
+# 스크립트 다운로드 (한글: KOR, 영문: ENG 폴더)
+curl http://203.228.107.184:9000/scripts/KOR/install-docker.sh -o install-docker.sh
 
 # 실행 권한 부여
 chmod +x install-docker.sh
@@ -26,7 +26,6 @@ sudo ./install-docker.sh
 ```
 
 이 스크립트는 다음을 자동으로 수행합니다:
-
 - 기존 Docker 제거 (선택사항)
 - 필수 패키지 설치
 - Docker 공식 저장소 추가
@@ -130,21 +129,21 @@ sudo usermod -aG docker $USER
 
 ## 🪟 Windows 설치
 
-### Docker Desktop 설치 (Windows)
+### Docker Desktop 설치
 
 1. [Docker Desktop for Windows](https://www.docker.com/products/docker-desktop) 다운로드
 2. 설치 프로그램 실행 및 설치 완료
 3. Docker Desktop 실행
 4. 시스템 재시작 (필요한 경우)
 
-### 요구사항 (Windows)
+### 요구사항
 
 - Windows 10 64-bit: Pro, Enterprise, or Education (Build 15063 이상)
 - Windows 11 64-bit: Home 또는 Pro (Build 22000 이상)
 - WSL 2 기능 활성화
 - 가상화 기능 활성화 (BIOS에서)
 
-### 설치 확인 (Windows)
+### 설치 확인
 
 ```powershell
 docker --version
@@ -154,7 +153,7 @@ docker run hello-world
 
 ## 🍎 macOS 설치
 
-### Docker Desktop 설치 (macOS)
+### Docker Desktop 설치
 
 1. [Docker Desktop for Mac](https://www.docker.com/products/docker-desktop) 다운로드
    - Intel Chip: Intel Chip용 다운로드
@@ -162,13 +161,13 @@ docker run hello-world
 2. 설치 프로그램 실행 및 설치 완료
 3. Docker Desktop 실행
 
-### 요구사항 (macOS)
+### 요구사항
 
 - macOS 10.15 이상
 - 최소 4GB RAM
 - VirtualBox 이전 버전 제거 (있는 경우)
 
-### 설치 확인 (macOS)
+### 설치 확인
 
 ```bash
 docker --version

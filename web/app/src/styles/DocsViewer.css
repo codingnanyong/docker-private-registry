@@ -1,7 +1,57 @@
 /* DocsViewer page - Markdown document viewer */
 
+.doc-controls {
+  margin-bottom: 24px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 20px;
+}
+
+.doc-lang-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.doc-lang-label {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #475569;
+}
+
+.doc-lang-buttons {
+  display: flex;
+  gap: 6px;
+}
+
+.doc-lang-btn {
+  padding: 8px 14px;
+  border: 2px solid #cbd5e1;
+  border-radius: 8px;
+  background: #fff;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #64748b;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s, color 0.2s;
+}
+
+.doc-lang-btn:hover {
+  border-color: #667eea;
+  color: #667eea;
+}
+
+.doc-lang-btn.active {
+  border-color: #667eea;
+  background: #667eea;
+  color: #fff;
+}
+
 .doc-select-wrap {
-  margin-bottom: 20px;
+  flex: 1;
+  min-width: 200px;
+  max-width: 500px;
 }
 
 .doc-select {

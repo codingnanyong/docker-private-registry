@@ -110,6 +110,19 @@ body {
   border: 1px solid #dee2e6;
 }
 
+.script-lang-hint {
+  margin: 0.5em 0 1em;
+  font-size: 0.9em;
+  color: #495057;
+}
+
+.script-lang-hint code {
+  background: #f1f3f5;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+
 .btn {
   display: inline-block;
   padding: 12px 24px;

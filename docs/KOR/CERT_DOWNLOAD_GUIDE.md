@@ -15,8 +15,8 @@ Registry와 함께 인증서 다운로드를 위한 웹 서버가 실행됩니�
 # 인증서 다운로드
 curl http://{REGISTRY_HOST}:8080/certs/domain.crt -o domain.crt
 
-# 예시 ({REGISTRY_HOST} 서버의 경우)
-curl http://{REGISTRY_HOST}:8080/certs/domain.crt -o domain.crt
+# 예시 (203.228.107.184 서버의 경우)
+curl http://203.228.107.184:8080/certs/domain.crt -o domain.crt
 ```
 
 ### 방법 2: wget 사용
@@ -26,7 +26,7 @@ curl http://{REGISTRY_HOST}:8080/certs/domain.crt -o domain.crt
 wget http://{REGISTRY_HOST}:8080/certs/domain.crt -O domain.crt
 
 # 예시
-wget http://{REGISTRY_HOST}:8080/certs/domain.crt -O domain.crt
+wget http://203.228.107.184:8080/certs/domain.crt -O domain.crt
 ```
 
 ### 방법 3: 웹 브라우저 사용
@@ -46,13 +46,11 @@ http://{REGISTRY_HOST}:8080/certs/
 ## 🔒 보안 고려사항
 
 ### 현재 설정
-
 - ✅ **domain.crt**: 다운로드 가능 (공개 인증서)
 - ❌ **domain.key**: 다운로드 불가 (보안상 비공개)
 
 ### 개인키 보호
-
-`domain.key` 파일은 보안상 웹 서버를 통해 제공하지 않습니다.
+`domain.key` 파일은 보안상 웹 서버를 통해 제공하지 않습니다. 
 필요한 경우 직접 서버에 접속하여 안전하게 전송하세요.
 
 ## 🚀 서버 시작
@@ -78,7 +76,6 @@ curl -I http://localhost:8080/certs/domain.crt
 ## 🔧 포트 변경
 
 인증서 서버의 포트를 변경하려면 `docker-compose.yml`에서 수정:
-
 ```yaml
 cert-server:
   ports:
@@ -91,7 +88,7 @@ cert-server:
 
 ```bash
 # 1. 인증서 다운로드
-curl http://{REGISTRY_HOST}:8080/certs/domain.crt -o domain.crt
+curl http://203.228.107.184:8080/certs/domain.crt -o domain.crt
 
 # 2. 인증서 설치
 sudo cp domain.crt /usr/local/share/ca-certificates/registry.crt
@@ -105,7 +102,7 @@ sudo systemctl restart docker
 
 ```powershell
 # 1. 인증서 다운로드
-Invoke-WebRequest -Uri "http://{REGISTRY_HOST}:8080/certs/domain.crt" -OutFile "domain.crt"
+Invoke-WebRequest -Uri "http://203.228.107.184:8080/certs/domain.crt" -OutFile "domain.crt"
 
 # 2. 인증서 설치 (관리자 권한 필요)
 certutil -addstore -f "ROOT" domain.crt
@@ -130,7 +127,6 @@ sudo iptables -A INPUT -p tcp --dport 8080 -j ACCEPT
 ## ✅ 확인 방법
 
 서버에서:
-
 ```bash
 # 인증서 서버 동작 확인
 curl http://localhost:8080/certs/domain.crt | head -5
@@ -140,7 +136,6 @@ curl -I http://localhost:8080/certs/domain.crt
 ```
 
 클라이언트에서:
-
 ```bash
 # 원격에서 인증서 다운로드 테스트
 curl http://{REGISTRY_HOST}:8080/certs/domain.crt -o /tmp/test.crt
