@@ -1,10 +1,16 @@
-# 📦 Legacy Web (Pre-React)
+# Legacy Web (Pre-React)
 
-This directory stores the **static web build files** used before switching to the React app.
+This directory contains **static web files** used before migrating to the React app.
 
-- **html/** 📄 – Static HTML pages (index, registry-list, compose-list, certs, scripts, docs-viewer)
-- **js/** 📜 – Page-specific JavaScript (registry-list.js, compose-list.js, etc.)
-- **css/** 🎨 – Page-specific stylesheets (common.css, registry-list.css, etc.)
+## Structure
 
-The current service uses the Vite React app build output under `web/app/`.  
-ℹ️ These files are kept for reference and recovery only; they are not used for deployment.
+| Directory | Description |
+|-----------|-------------|
+| **html/** | Static HTML pages: `index`, `registry-list`, `compose-list`, `certs-index`, `scripts-index`, `docs-viewer` |
+| **js/** | Page-specific JavaScript: `common.js`, `index.js`, `registry-list.js`, `compose-list.js`, `docs-viewer.js` |
+| **css/** | Stylesheets: `common.css`, `registry-list.css`, `compose-list.css`, `certs-index.css`, `scripts-index.css`, `docs-viewer.css` |
+
+## Note
+
+The current service uses the Vite React app in `web/app/`.  
+These legacy files are kept for reference and recovery only; they are **not used for deployment**.
