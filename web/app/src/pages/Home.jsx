@@ -134,30 +134,26 @@ export default function Home() {
 
       {stats.error == null && (
         <div className="registry-stats">
-          <h2><span className="registry-stats-title-icon" aria-hidden>📊</span> {t('Registry Statistics', '레지스트리 통계')}</h2>
+          <h2 className="registry-stats-title">{t('Registry Statistics', '레지스트리 통계')}</h2>
           {stats.loading ? (
             <div className="stats-loading"><p>{t('Loading...', '불러오는 중...')}</p></div>
           ) : (
             <div className="stats-grid">
               <div className="stat-item">
-                <span className="stat-icon" aria-hidden>📦</span>
-                <div className="stat-number">{stats.totalImages}</div>
                 <div className="stat-label">{t('Images', '이미지')}</div>
+                <div className="stat-number">{stats.totalImages}</div>
               </div>
               <div className="stat-item">
-                <span className="stat-icon" aria-hidden>💾</span>
-                <div className="stat-number">{stats.estimatedSize}</div>
                 <div className="stat-label">{t('Size', '용량')}</div>
+                <div className="stat-number">{stats.estimatedSize}</div>
               </div>
               <div className="stat-item">
-                <span className="stat-icon" aria-hidden>🏷️</span>
-                <div className="stat-number">{stats.totalTags}</div>
                 <div className="stat-label">{t('Tags', '태그')}</div>
+                <div className="stat-number">{stats.totalTags}</div>
               </div>
               <div className="stat-item">
-                <span className="stat-icon" aria-hidden>📂</span>
-                <div className="stat-number">{stats.largestImage}</div>
                 <div className="stat-label">{t('Largest Repo', '최대 저장소')}</div>
+                <div className="stat-number">{stats.largestImage}</div>
               </div>
             </div>
           )}

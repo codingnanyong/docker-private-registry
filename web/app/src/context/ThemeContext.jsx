@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState, useEffect, useLayoutEffect } from 'react';
 
 const STORAGE_KEY = 'registry-web-theme';
 
@@ -13,11 +13,15 @@ export function ThemeProvider({ children }) {
     }
   });
 
+  /* 브라우저가 그리기 전에 테마 적용 → 화면 깜빡임 방지 */
+  useLayoutEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+  }, [theme]);
+
   useEffect(() => {
     try {
       localStorage.setItem(STORAGE_KEY, theme);
     } catch {}
-    document.documentElement.setAttribute('data-theme', theme);
   }, [theme]);
 
   const setTheme = (value) => setThemeState(value === 'dark' ? 'dark' : 'light');

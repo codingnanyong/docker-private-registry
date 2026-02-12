@@ -74,21 +74,51 @@ html:not([data-theme="dark"]) .home-page .registry-stats {
   color: #0f172a;
   border: 1px solid #e2e8f0;
   border-radius: 10px;
+  position: relative;
+  overflow: hidden;
 }
 
 html:not([data-theme="dark"]) .home-page .registry-stats h2 {
   color: #0f172a;
 }
 
+/* 라이트: 섹션 배경에 은은한 차트 이미지(SVG) */
+html:not([data-theme="dark"]) .home-page .registry-stats::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.22;
+  background-repeat: no-repeat;
+  background-position: right 18px center;
+  background-size: 260px 130px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='160' viewBox='0 0 320 160'%3E%3Cg fill='none' stroke='%230284c7' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' opacity='0.35'%3E%3Cpath d='M20 110 L70 90 L110 100 L150 70 L190 82 L230 55 L270 70 L300 50'/%3E%3C/g%3E%3Cg fill='%230284c7' opacity='0.18'%3E%3Crect x='28' y='96' width='10' height='34' rx='2'/%3E%3Crect x='58' y='86' width='10' height='44' rx='2'/%3E%3Crect x='88' y='92' width='10' height='38' rx='2'/%3E%3Crect x='118' y='74' width='10' height='56' rx='2'/%3E%3Crect x='148' y='82' width='10' height='48' rx='2'/%3E%3Crect x='178' y='64' width='10' height='66' rx='2'/%3E%3Crect x='208' y='72' width='10' height='58' rx='2'/%3E%3Crect x='238' y='56' width='10' height='74' rx='2'/%3E%3Crect x='268' y='64' width='10' height='66' rx='2'/%3E%3C/g%3E%3C/svg%3E");
+}
+
 .home-page .registry-stats {
   margin-bottom: 20px;
 }
 
-.home-page .registry-stats-title-icon {
-  display: inline-block;
-  margin-right: 6px;
-  font-size: 1em;
-  vertical-align: -0.15em;
+.home-page .registry-stats-title {
+  position: relative;
+  overflow: hidden;
+  font-weight: 700;
+  font-size: 1.4em;
+  letter-spacing: 0.02em;
+  padding-right: 1.2em;
+}
+
+/* 하위 카드처럼 배경 아이콘을 살짝만, 텍스트를 가리지 않도록 오른쪽에 배치 */
+.home-page .registry-stats-title::before {
+  content: "📊";
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 2.5rem;
+  opacity: 0.12;
+  pointer-events: none;
+  z-index: 0;
 }
 
 html:not([data-theme="dark"]) .home-page .stat-item {
@@ -97,6 +127,20 @@ html:not([data-theme="dark"]) .home-page .stat-item {
   color: #0c4a6e;
   border-radius: 10px;
   box-shadow: 0 1px 3px rgba(14, 165, 233, 0.08);
+}
+
+/* 라이트: 카드별 좌측 액센트 */
+html:not([data-theme="dark"]) .home-page .stats-grid .stat-item:nth-child(1) {
+  border-left: 3px solid #0ea5e9;
+}
+html:not([data-theme="dark"]) .home-page .stats-grid .stat-item:nth-child(2) {
+  border-left: 3px solid #8b5cf6;
+}
+html:not([data-theme="dark"]) .home-page .stats-grid .stat-item:nth-child(3) {
+  border-left: 3px solid #eab308;
+}
+html:not([data-theme="dark"]) .home-page .stats-grid .stat-item:nth-child(4) {
+  border-left: 3px solid #10b981;
 }
 
 html:not([data-theme="dark"]) .home-page .stat-number {
@@ -112,19 +156,47 @@ html:not([data-theme="dark"]) .home-page .stats-loading {
   color: #475569;
 }
 
-/* Statistics 아이콘화 */
+/* Statistics 아이콘화 + 배경 워터마크 */
 .home-page .stat-item {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 6px;
+  overflow: hidden;
+  min-height: 120px;
+  padding: 16px 14px;
 }
 
-.home-page .stat-icon {
-  display: block;
-  font-size: 1.75rem;
-  line-height: 1;
-  margin-bottom: 2px;
+.home-page .stat-item::before {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 4rem;
+  opacity: 0.12;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.home-page .stat-item .stat-number,
+.home-page .stat-item .stat-label {
+  position: relative;
+  z-index: 1;
+}
+
+.home-page .stats-grid .stat-item:nth-child(1)::before { content: "📦"; }
+.home-page .stats-grid .stat-item:nth-child(2)::before { content: "💾"; }
+.home-page .stats-grid .stat-item:nth-child(3)::before { content: "🏷️"; }
+.home-page .stats-grid .stat-item:nth-child(4)::before { content: "📂"; }
+
+.home-page .stat-label {
+  font-size: 0.9em;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  opacity: 0.95;
 }
 
 .home-page .stat-number {
@@ -133,8 +205,20 @@ html:not([data-theme="dark"]) .home-page .stats-loading {
   margin-bottom: 0;
 }
 
-.home-page .stat-label {
-  font-size: 0.7em;
-  opacity: 0.9;
-  text-transform: uppercase;
+/* 다크: 카드별 어울리는 배경 */
+[data-theme="dark"] .home-page .stats-grid .stat-item:nth-child(1) {
+  background: linear-gradient(135deg, rgba(14, 165, 233, 0.15) 0%, rgba(14, 165, 233, 0.05) 100%);
+  border: 1px solid rgba(14, 165, 233, 0.25);
+}
+[data-theme="dark"] .home-page .stats-grid .stat-item:nth-child(2) {
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.15) 0%, rgba(139, 92, 246, 0.05) 100%);
+  border: 1px solid rgba(139, 92, 246, 0.25);
+}
+[data-theme="dark"] .home-page .stats-grid .stat-item:nth-child(3) {
+  background: linear-gradient(135deg, rgba(234, 179, 8, 0.15) 0%, rgba(234, 179, 8, 0.05) 100%);
+  border: 1px solid rgba(234, 179, 8, 0.25);
+}
+[data-theme="dark"] .home-page .stats-grid .stat-item:nth-child(4) {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(16, 185, 129, 0.05) 100%);
+  border: 1px solid rgba(16, 185, 129, 0.25);
 }

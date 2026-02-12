@@ -1,0 +1,79 @@
+.auto-refresh-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #0f172a;
+  user-select: none;
+}
+
+.auto-refresh-toggle-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.toggle-track {
+  display: inline-flex;
+  align-items: center;
+  width: 44px;
+  height: 24px;
+  border-radius: 12px;
+  background: #334155;
+  padding: 0 2px;
+  flex-shrink: 0;
+  transition: background 0.2s;
+}
+
+.toggle-thumb {
+  display: block;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #1e293b;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s;
+  transform: translateX(20px);
+}
+
+.auto-refresh-toggle-input:checked + .toggle-track {
+  background: #0369a1;
+}
+
+.auto-refresh-toggle-input:checked + .toggle-track .toggle-thumb {
+  transform: translateX(0);
+}
+
+.auto-refresh-label {
+  white-space: nowrap;
+}
+
+/* Light mode: track/thumb when off */
+html:not([data-theme="dark"]) .toggle-track {
+  background: #cbd5e1;
+}
+
+html:not([data-theme="dark"]) .toggle-thumb {
+  background: #f8fafc;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+}
+
+html:not([data-theme="dark"]) .auto-refresh-toggle-input:checked + .toggle-track {
+  background: #0369a1;
+}
+
+html:not([data-theme="dark"]) .auto-refresh-toggle-input:checked + .toggle-track .toggle-thumb {
+  background: #f8fafc;
+}
+
+[data-theme="dark"] .app-main-inner .auto-refresh-toggle {
+  color: #e2e8f0;
+}

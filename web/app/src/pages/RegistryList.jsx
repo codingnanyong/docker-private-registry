@@ -6,6 +6,7 @@ import {
   buildCommands,
 } from '../utils/registry';
 import { useLang } from '../context/LangContext';
+import AutoRefreshToggle from '../components/AutoRefreshToggle';
 import '../styles/RegistryList.css';
 
 export default function RegistryList() {
@@ -19,9 +20,12 @@ export default function RegistryList() {
   const [commandsModal, setCommandsModal] = useState(null);
   const [deleting, setDeleting] = useState(null);
 
-  const loadRepositories = useCallback(async () => {
-    setLoading(true);
-    setError(null);
+  const loadRepositories = useCallback(async (opts = {}) => {
+    const silent = opts.silent === true;
+    if (!silent) {
+      setLoading(true);
+      setError(null);
+    }
     try {
       const res = await fetch('/api/v2/_catalog');
       if (!res.ok) throw new Error(res.status);
@@ -52,6 +56,7 @@ export default function RegistryList() {
       });
       setRepos(valid);
       setSelectedTags((prev) => ({ ...initialTags, ...prev }));
+      if (silent) setError(null);
     } catch (err) {
       setError(err.message);
       setRepos([]);
@@ -159,6 +164,7 @@ export default function RegistryList() {
       </div>
 
       <div className="top-controls">
+        <AutoRefreshToggle onRefresh={() => loadRepositories({ silent: true })} />
         <div className="control-buttons">
           <button type="button" className="refresh-btn-icon" onClick={() => loadRepositories()} title={t('Refresh', '새로고침')}>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
