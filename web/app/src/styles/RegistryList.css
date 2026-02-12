@@ -8,7 +8,7 @@
   background: #fff;
   border: 1px solid #e2e8f0;
   border-radius: 12px;
-  border-left: 4px solid #667eea;
+  border-left: 4px solid #0369a1;
   padding: 0;
   transition: box-shadow 0.2s, border-color 0.2s;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
@@ -18,7 +18,7 @@
 .repo-card:hover {
   box-shadow: 0 8px 24px rgba(102, 126, 234, 0.15);
   border-color: #c7d2fe;
-  border-left-color: #667eea;
+  border-left-color: #0369a1;
 }
 
 .repo-card-header {
@@ -77,7 +77,7 @@
 
 .tag-select-native:focus {
   outline: none;
-  border-color: #667eea;
+  border-color: #0369a1;
   box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2);
 }
 
@@ -181,7 +181,7 @@
 
 .search-box input:focus {
   outline: none;
-  border-color: #667eea;
+  border-color: #0369a1;
 }
 
 .search-stats {
@@ -212,15 +212,15 @@
   width: 48px;
   height: 48px;
   background: #f8f9fa;
-  border: 2px solid #667eea;
+  border: 2px solid #0369a1;
   border-radius: 50%;
   cursor: pointer;
-  color: #667eea;
+  color: #0369a1;
 }
 
 .refresh-btn-icon:hover,
 .gc-btn-icon:hover {
-  background: #667eea;
+  background: #0369a1;
   color: white;
   transform: scale(1.05);
 }
@@ -253,7 +253,7 @@
   align-items: center;
   padding: 20px;
   border-bottom: 1px solid #e9ecef;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: #0f172a;
   color: white;
 }
 
@@ -306,7 +306,7 @@
 
 .copy-btn {
   padding: 8px 16px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: #0369a1;
   color: white;
   border: none;
   border-radius: 6px;
@@ -318,4 +318,95 @@
 .copy-btn:hover {
   opacity: 0.9;
   transform: translateY(-1px);
+}
+
+/* Dark theme */
+[data-theme="dark"] .app-main-inner .search-box input {
+  background: #252536;
+  border-color: #3f3f5c;
+  color: #e2e2e8;
+}
+
+[data-theme="dark"] .app-main-inner .search-stats {
+  color: #9ca3af;
+}
+
+[data-theme="dark"] .app-main-inner .top-controls .refresh-btn-icon,
+[data-theme="dark"] .app-main-inner .top-controls .gc-btn-icon {
+  background: #252536;
+  border-color: #38bdf8;
+  color: #7dd3fc;
+}
+
+[data-theme="dark"] .app-main-inner .top-controls .refresh-btn-icon:hover,
+[data-theme="dark"] .app-main-inner .top-controls .gc-btn-icon:hover {
+  background: #38bdf8;
+  color: white;
+}
+
+[data-theme="dark"] .app-main-inner .repo-card {
+  background: #252536;
+  border-color: #3f3f5c;
+  border-left-color: #38bdf8;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .app-main-inner .repo-card:hover {
+  border-color: #0ea5e9;
+  box-shadow: 0 8px 24px rgba(56, 189, 248, 0.2);
+}
+
+[data-theme="dark"] .app-main-inner .repo-name {
+  color: #e2e2e8;
+}
+
+[data-theme="dark"] .app-main-inner .tag-label {
+  color: #9ca3af;
+}
+
+[data-theme="dark"] .app-main-inner .tag-select-native {
+  background: #1a1a2e;
+  border-color: #3f3f5c;
+  color: #e2e2e8;
+}
+
+[data-theme="dark"] .app-main-inner .tag-select-native:focus {
+  border-color: #38bdf8;
+  box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.3);
+}
+
+[data-theme="dark"] .app-main-inner .repo-card-actions-wrap {
+  background: #1e1e2e;
+  border-top-color: #3f3f5c;
+}
+
+[data-theme="dark"] .app-main-inner .delete-btn {
+  background: #422020;
+  color: #f87171;
+  border-color: #7f1d1d;
+}
+
+[data-theme="dark"] .app-main-inner .delete-btn:hover:not(:disabled) {
+  background: #dc2626;
+  color: white;
+  border-color: #dc2626;
+}
+
+[data-theme="dark"] .app-main-inner .no-repos {
+  color: #9ca3af;
+}
+
+[data-theme="dark"] .app-main-inner .command-modal-content {
+  background: #1a1a2e;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+}
+
+[data-theme="dark"] .app-main-inner .command-modal-body {
+  background: #1a1a2e;
+}
+
+[data-theme="dark"] .app-main-inner .command-code {
+  background: #252536;
+  border-color: #3f3f5c;
+  color: #e2e2e8;
 }

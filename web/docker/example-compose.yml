@@ -6,7 +6,7 @@ version: '3.8'
 services:
   # Example service from private registry
   app:
-    image: 203.228.107.184:5000/your-image:latest
+    image: ${REGISTRY:-{REGISTRY IP}:{PORT}}/your-image:latest
     container_name: example-app
     restart: unless-stopped
     ports:

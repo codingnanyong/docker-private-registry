@@ -1,5 +1,5 @@
-/* Grid: 이미지 목록과 동일 */
-.content .compose-list {
+/* Grid: 카드 간격 포함 */
+.compose-list {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 24px;
@@ -10,7 +10,7 @@
   background: #fff;
   border: 1px solid #e2e8f0;
   border-radius: 12px;
-  border-left: 4px solid #667eea;
+  border-left: 4px solid #0369a1;
   padding: 0;
   transition: box-shadow 0.2s, border-color 0.2s;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
@@ -20,7 +20,7 @@
 .compose-card:hover {
   box-shadow: 0 8px 24px rgba(102, 126, 234, 0.15);
   border-color: #c7d2fe;
-  border-left-color: #667eea;
+  border-left-color: #0369a1;
 }
 
 .compose-card-header {
@@ -273,8 +273,103 @@
 }
 
 @media (max-width: 768px) {
-  .content .compose-list {
+  .compose-list {
     grid-template-columns: 1fr;
     gap: 24px;
   }
+}
+
+/* Dark theme */
+[data-theme="dark"] .app-main-inner .search-box {
+  background: #252536;
+  border-color: #3f3f5c;
+}
+
+[data-theme="dark"] .app-main-inner .search-box input {
+  background: transparent;
+  color: #e2e2e8;
+}
+
+[data-theme="dark"] .app-main-inner .search-box input::placeholder {
+  color: #6b7280;
+}
+
+[data-theme="dark"] .app-main-inner .search-stats {
+  color: #9ca3af;
+}
+
+[data-theme="dark"] .app-main-inner .compose-card {
+  background: #252536;
+  border-color: #3f3f5c;
+  border-left-color: #38bdf8;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .app-main-inner .compose-card:hover {
+  border-color: #0ea5e9;
+  box-shadow: 0 8px 24px rgba(56, 189, 248, 0.2);
+}
+
+[data-theme="dark"] .app-main-inner .compose-name {
+  color: #e2e2e8;
+}
+
+[data-theme="dark"] .app-main-inner .compose-path {
+  color: #9ca3af;
+}
+
+[data-theme="dark"] .app-main-inner .compose-card-actions-wrap {
+  background: #1e1e2e;
+  border-top-color: #3f3f5c;
+}
+
+[data-theme="dark"] .app-main-inner .env-notice {
+  background: #422006;
+  border-color: #b45309;
+  color: #fcd34d;
+}
+
+[data-theme="dark"] .app-main-inner .no-results {
+  background: #252536;
+  border-color: #3f3f5c;
+  color: #9ca3af;
+}
+
+[data-theme="dark"] .app-main-inner .modal-content {
+  background: #1a1a2e;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+}
+
+[data-theme="dark"] .app-main-inner .modal-header {
+  border-bottom-color: #3f3f5c;
+}
+
+[data-theme="dark"] .app-main-inner .modal-header h3 {
+  color: #e2e2e8;
+}
+
+[data-theme="dark"] .app-main-inner .modal-close {
+  color: #9ca3af;
+}
+
+[data-theme="dark"] .app-main-inner .modal-close:hover {
+  color: #e2e2e8;
+  background: #252536;
+}
+
+[data-theme="dark"] .app-main-inner .modal-body {
+  background: #1a1a2e;
+}
+
+[data-theme="dark"] .app-main-inner .modal-body pre {
+  background: #252536;
+  border: 1px solid #3f3f5c;
+}
+
+[data-theme="dark"] .app-main-inner .modal-body code {
+  color: #e2e2e8;
+}
+
+[data-theme="dark"] .app-main-inner .modal-footer {
+  border-top-color: #3f3f5c;
 }

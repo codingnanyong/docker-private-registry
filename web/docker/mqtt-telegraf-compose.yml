@@ -1,11 +1,11 @@
 # Registry에서 Pull 후 실행 (설정값 이미지 포함)
-# 사용: REGISTRY=203.228.107.184:5000 IMAGE_TAG=v1.0.0 docker compose -f docker-compose.registry.yml up -d
+# 사용: REGISTRY={REGISTRY IP}:{PORT} IMAGE_TAG=v1.0.0 docker compose -f docker-compose.registry.yml up -d
 
 name: mqtt-telegraf-demo
 
 services:
   mosquitto:
-    image: ${REGISTRY:-203.228.107.184:5000}/mosquitto-demo:${IMAGE_TAG:-latest}
+    image: ${REGISTRY:-{REGISTRY IP}:{PORT}}/mosquitto-demo:${IMAGE_TAG:-latest}
     container_name: mqtt-mosquitto
     ports:
       - "1883:1883"
@@ -22,7 +22,7 @@ services:
     restart: unless-stopped
 
   telegraf:
-    image: ${REGISTRY:-203.228.107.184:5000}/telegraf-demo:${IMAGE_TAG:-latest}
+    image: ${REGISTRY:-{REGISTRY IP}:{PORT}}/telegraf-demo:${IMAGE_TAG:-latest}
     container_name: telegraf
     volumes:
       - telegraf_out:/var/lib/telegraf
@@ -40,14 +40,14 @@ services:
     restart: unless-stopped
 
   web:
-    image: ${REGISTRY:-203.228.107.184:5000}/mqtt-telegraf-demo-web:${IMAGE_TAG:-latest}
+    image: ${REGISTRY:-{REGISTRY IP}:{PORT}}/mqtt-telegraf-demo-web:${IMAGE_TAG:-latest}
     container_name: mqtt-web
     ports:
       - "8888:80"
     restart: unless-stopped
 
   api:
-    image: ${REGISTRY:-203.228.107.184:5000}/mqtt-telegraf-demo-api:${IMAGE_TAG:-latest}
+    image: ${REGISTRY:-{REGISTRY IP}:{PORT}}/mqtt-telegraf-demo-api:${IMAGE_TAG:-latest}
     container_name: mqtt-api
     ports:
       - "8889:5000"

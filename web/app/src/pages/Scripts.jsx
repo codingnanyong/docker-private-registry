@@ -1,6 +1,5 @@
-import { useState } from 'react';
 import { getBaseUrl } from '../utils/urls';
-import BackLink from '../components/BackLink';
+import { useLang } from '../context/LangContext';
 import '../styles/Scripts.css';
 
 const SCRIPTS_DIR = { ko: 'KOR', en: 'ENG' };
@@ -25,7 +24,7 @@ const SCRIPT_SECTIONS = [
 ];
 
 export default function Scripts() {
-  const [lang, setLang] = useState('ko');
+  const { lang } = useLang();
   const base = getBaseUrl();
 
   const scriptUrl = (script) => `${base}/scripts/${SCRIPTS_DIR[lang]}/${script.name}`;
@@ -40,28 +39,12 @@ export default function Scripts() {
         {lang === 'en'
           ? 'Download scripts to automate Docker installation and Registry configuration.'
           : 'Docker 설치 및 Registry 설정을 위한 스크립트를 다운로드하세요.'}
-      </div>
-
-      <div className="scripts-lang-wrap">
-        <span className="scripts-lang-label">{lang === 'en' ? 'Language' : '언어'}:</span>
-        <div className="scripts-lang-buttons">
-          <button
-            type="button"
-            className={`scripts-lang-btn ${lang === 'ko' ? 'active' : ''}`}
-            onClick={() => setLang('ko')}
-            aria-pressed={lang === 'ko'}
-          >
-            한국어
-          </button>
-          <button
-            type="button"
-            className={`scripts-lang-btn ${lang === 'en' ? 'active' : ''}`}
-            onClick={() => setLang('en')}
-            aria-pressed={lang === 'en'}
-          >
-            English
-          </button>
-        </div>
+        <br />
+        <strong>Linux/macOS:</strong>{' '}
+        <code>curl [URL] -o script.sh && chmod +x script.sh && ./script.sh</code>
+        <br />
+        <strong>Windows:</strong> <code>curl [URL] -o script.bat && script.bat</code>{' '}
+        ({lang === 'en' ? 'Run as Admin' : '관리자 권한으로 실행'})
       </div>
 
       {SCRIPT_SECTIONS.map((section) => (
@@ -84,15 +67,6 @@ export default function Scripts() {
           </div>
         </div>
       ))}
-
-      <div className="info-box">
-        <strong>Linux/macOS:</strong>{' '}
-        <code>curl [URL] -o script.sh && chmod +x script.sh && ./script.sh</code>
-        <br />
-        <strong>Windows:</strong> <code>curl [URL] -o script.bat && script.bat</code>{' '}
-        ({lang === 'en' ? 'Run as Admin' : '관리자 권한으로 실행'})
-      </div>
-      <BackLink />
     </>
   );
 }

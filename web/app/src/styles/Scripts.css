@@ -31,53 +31,41 @@
 }
 
 .scripts-lang-btn:hover {
-  border-color: #667eea;
-  color: #667eea;
+  border-color: #0369a1;
+  color: #0369a1;
 }
 
 .scripts-lang-btn.active {
-  border-color: #667eea;
-  background: #667eea;
+  border-color: #0369a1;
+  background: #0369a1;
   color: #fff;
 }
 
 .scripts-section {
-  margin: 28px 0;
-  padding: 24px;
-  background: #fff;
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  margin: 0 0 32px 0;
+  padding: 0;
 }
 
 .scripts-section h3 {
-  margin: 0 0 20px 0;
-  padding-bottom: 12px;
-  font-size: 1.25rem;
+  margin: 0 0 14px 0;
+  padding-bottom: 8px;
+  font-size: 1.2rem;
   font-weight: 700;
   color: #1e293b;
-  border-bottom: 2px solid #667eea;
+  border-bottom: 1px solid #e2e8f0;
 }
 
 .script-item {
   display: flex;
   align-items: center;
-  gap: 20px;
-  padding: 20px 24px;
-  margin-bottom: 16px;
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  border-radius: 10px;
-  border-left: 4px solid #667eea;
-  transition: box-shadow 0.2s;
+  gap: 16px;
+  padding: 14px 0;
+  margin-bottom: 0;
+  border-bottom: 1px solid #e2e8f0;
 }
 
 .script-item:last-child {
-  margin-bottom: 0;
-}
-
-.script-item:hover {
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.12);
+  border-bottom: none;
 }
 
 .script-item .script-icon {
@@ -109,13 +97,31 @@
 .script-item .script-size {
   font-size: 0.8rem;
   color: #64748b;
-  font-weight: 600;
-  display: inline-block;
-  padding: 2px 8px;
-  background: #e2e8f0;
-  border-radius: 4px;
+  font-weight: 500;
 }
 
 .script-item .btn {
   flex-shrink: 0;
+}
+
+/* Dark theme */
+[data-theme="dark"] .app-main-inner .scripts-section h3 {
+  color: #f1f5f9;
+  border-bottom-color: #334155;
+}
+
+[data-theme="dark"] .app-main-inner .script-item {
+  border-bottom-color: #334155;
+}
+
+[data-theme="dark"] .app-main-inner .script-item .script-name {
+  color: #e2e8f0;
+}
+
+[data-theme="dark"] .app-main-inner .script-item .script-desc {
+  color: #94a3b8;
+}
+
+[data-theme="dark"] .app-main-inner .script-item .script-size {
+  color: #94a3b8;
 }

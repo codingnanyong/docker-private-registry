@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { marked } from 'marked';
-import BackLink from '../components/BackLink';
+import { useLang } from '../context/LangContext';
 import '../styles/DocsViewer.css';
 
 const DOCS = [
@@ -48,22 +48,34 @@ function getInitialState(searchParams) {
 }
 
 export default function DocsViewer() {
+  const { lang: selectedLang, setLang } = useLang();
   const [searchParams, setSearchParams] = useSearchParams();
-  const [state, setState] = useState(() => getInitialState(searchParams));
+  const [docId, setDocId] = useState(() => {
+    const next = getInitialState(searchParams);
+    return next.id;
+  });
   const [content, setContent] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const { id: selectedId, lang: selectedLang } = state;
+  const selectedId = docId;
   const selectedDoc = DOCS.find((d) => d.id === selectedId);
   const filename = selectedDoc
     ? `${DOCS_DIR[selectedLang]}/${selectedDoc.file}`
     : '';
 
+  /* Sync URL -> doc id; URL lang param -> global lang (for shared links) */
   useEffect(() => {
     const next = getInitialState(searchParams);
-    setState((prev) => (prev.id !== next.id || prev.lang !== next.lang ? next : prev));
+    if (next.id !== selectedId) setDocId(next.id);
+    if (searchParams.get('lang') === 'en') setLang('en');
+    else if (searchParams.get('lang') === 'ko') setLang('ko');
   }, [searchParams]);
+
+  /* Sync global lang -> URL when on docs page */
+  useEffect(() => {
+    setSearchParams({ doc: selectedId, lang: selectedLang }, { replace: true });
+  }, [selectedLang]);
 
   useEffect(() => {
     if (!filename) {
@@ -104,15 +116,8 @@ export default function DocsViewer() {
   }, [filename]);
 
   const setDoc = (id) => {
-    const next = { ...state, id };
-    setState(next);
-    setSearchParams({ doc: id, lang: next.lang }, { replace: true });
-  };
-
-  const setLang = (lang) => {
-    const next = { ...state, lang };
-    setState(next);
-    setSearchParams({ doc: state.id, lang }, { replace: true });
+    setDocId(id);
+    setSearchParams({ doc: id, lang: selectedLang }, { replace: true });
   };
 
   const label = (d) => (selectedLang === 'en' ? d.labelEn : d.labelKo);
@@ -120,27 +125,6 @@ export default function DocsViewer() {
   return (
     <>
       <div className="doc-controls">
-        <div className="doc-lang-wrap">
-          <span className="doc-lang-label">Language / 언어:</span>
-          <div className="doc-lang-buttons">
-            <button
-              type="button"
-              className={`doc-lang-btn ${selectedLang === 'en' ? 'active' : ''}`}
-              onClick={() => setLang('en')}
-              aria-pressed={selectedLang === 'en'}
-            >
-              English
-            </button>
-            <button
-              type="button"
-              className={`doc-lang-btn ${selectedLang === 'ko' ? 'active' : ''}`}
-              onClick={() => setLang('ko')}
-              aria-pressed={selectedLang === 'ko'}
-            >
-              한국어
-            </button>
-          </div>
-        </div>
         <div className="doc-select-wrap">
           <select
             id="docSelector"
@@ -171,7 +155,6 @@ export default function DocsViewer() {
           </div>
         )}
       </div>
-      <BackLink />
     </>
   );
 }

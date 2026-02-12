@@ -1,9 +1,14 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useLang } from '../context/LangContext';
 import { getRegistryUrl, getCurlBaseUrl } from '../utils/urls';
+import '../styles/Home.css';
+
+const COPY_LABELS = { copy: { en: 'Copy', ko: '복사' }, copied: { en: 'Copied!', ko: '복사됨!' }, failed: { en: 'Failed', ko: '실패' } };
 
 export default function Home() {
-  const [copyLabel, setCopyLabel] = useState('Copy');
+  const { lang } = useLang();
+  const [copyKey, setCopyKey] = useState('copy');
   const [stats, setStats] = useState({
     totalImages: '-',
     estimatedSize: '-',
@@ -18,13 +23,34 @@ export default function Home() {
 
   const copyRegistryUrl = async (e) => {
     e?.preventDefault();
+    const onSuccess = () => {
+      setCopyKey('copied');
+      setTimeout(() => setCopyKey('copy'), 2000);
+    };
+    const onFailure = () => {
+      setCopyKey('failed');
+      setTimeout(() => setCopyKey('copy'), 2000);
+    };
     try {
-      await navigator.clipboard.writeText(registryUrl);
-      setCopyLabel('Copied!');
-      setTimeout(() => setCopyLabel('Copy'), 2000);
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(registryUrl);
+        onSuccess();
+        return;
+      }
+      const textarea = document.createElement('textarea');
+      textarea.value = registryUrl;
+      textarea.setAttribute('readonly', '');
+      textarea.style.position = 'absolute';
+      textarea.style.left = '-9999px';
+      document.body.appendChild(textarea);
+      textarea.select();
+      textarea.setSelectionRange(0, registryUrl.length);
+      const ok = document.execCommand('copy');
+      document.body.removeChild(textarea);
+      if (ok) onSuccess();
+      else onFailure();
     } catch {
-      setCopyLabel('Failed');
-      setTimeout(() => setCopyLabel('Copy'), 2000);
+      onFailure();
     }
   };
 
@@ -71,106 +97,85 @@ export default function Home() {
     return () => { cancelled = true; };
   }, []);
 
+  const t = (en, ko) => (lang === 'en' ? en : ko);
+
   return (
-    <>
-      <div className="info-box">
-        <strong>Welcome!</strong>
-        <br />
-        This server provides resources for connecting to the Docker Private Registry.
-        <br />
-        Download the certificate and scripts you need to get started and view the documentation.
+    <div className="home-page">
+      <div className="info-box home-intro">
+        <strong>{t('Welcome.', '환영합니다.')}</strong>{' '}
+        {t(
+          'This server provides certificates, scripts, and docs for the Docker Private Registry. Use the sidebar to get started.',
+          '이 서버는 Docker Private Registry용 인증서, 스크립트, 문서를 제공합니다. 사이드바에서 시작하세요.'
+        )}
       </div>
 
-      <div className="section">
-        <h2>Documentation</h2>
-        <p>View comprehensive guides and documentation:</p>
-        <ul>
-          <li><strong>DOCKER_BASICS_GUIDE.md</strong> - Docker and Docker Compose fundamentals</li>
-          <li><strong>DOCKER_INSTALL_GUIDE.md</strong> - Docker installation instructions</li>
-          <li><strong>EXTERNAL_CLIENT_GUIDE.md</strong> - External clients connect guide</li>
-          <li><strong>CERT_DOWNLOAD_GUIDE.md</strong> - Certificate download guide</li>
-          <li><strong>REGISTRY_USAGE_GUIDE.md</strong> - Pushing/pulling to private registry</li>
-        </ul>
-        <Link to="/docs" className="btn btn-secondary">View All Documentation</Link>
-      </div>
-
-      <div className="section">
-        <h2>Setup Scripts</h2>
-        <p>Automated installation and configuration scripts for Linux, macOS, and Windows.</p>
-        <div className="download-box">
-          <strong>Install Docker:</strong>
-          <br />
-          Linux/macOS: <code>curl {curlBase}/scripts/KOR/install-docker.sh -o install-docker.sh</code>
-          <br />
-          Windows: <code>curl {curlBase}/scripts/KOR/install-docker-windows.bat -o install-docker-windows.bat</code>
-        </div>
-        <div className="download-box">
-          <strong>Setup Registry:</strong>
-          <br />
-          Linux/macOS: <code>curl {curlBase}/scripts/KOR/setup-docker-registry.sh -o setup.sh</code>
-          <br />
-          Windows: <code>curl {curlBase}/scripts/KOR/setup-docker-registry-windows.bat -o setup.bat</code>
-        </div>
-        <p className="script-lang-hint">Use <code>KOR</code> or <code>ENG</code> in the path for Korean or English scripts (e.g. <code>/scripts/ENG/</code>).</p>
-        <Link to="/scripts" className="btn btn-secondary">Browse Scripts Directory</Link>
-      </div>
-
-      <div className="section">
-        <h2>Certificates</h2>
-        <p>Download the SSL certificate required to connect to the registry securely.</p>
-        <div className="download-box">
-          <strong>Download Certificate:</strong>
-          <code>curl {curlBase}/certs/domain.crt -o domain.crt</code>
-        </div>
-        <Link to="/certs" className="btn">Browse Certificates Directory</Link>
-      </div>
-
-      <div className="registry-url-box">
-        <strong>Registry URL</strong>
-        <div className="registry-url-copy">
-          <span>{registryUrl}</span>
-          <button type="button" className="btn-copy" onClick={copyRegistryUrl}>
-            {copyLabel}
-          </button>
-        </div>
+      <div className="home-links" role="navigation" aria-label={t('Quick links', '바로가기')}>
+        <Link to="/docs" className="home-link-tile" title={t('Documentation', '문서')}>
+          <span className="home-link-icon" aria-hidden>📚</span>
+          <span className="home-link-label">{t('Documentation', '문서')}</span>
+        </Link>
+        <Link to="/scripts" className="home-link-tile" title={t('Scripts', '스크립트')}>
+          <span className="home-link-icon" aria-hidden>📜</span>
+          <span className="home-link-label">{t('Scripts', '스크립트')}</span>
+        </Link>
+        <Link to="/certs" className="home-link-tile" title={t('Certificates', '인증서')}>
+          <span className="home-link-icon" aria-hidden>🔐</span>
+          <span className="home-link-label">{t('Certificates', '인증서')}</span>
+        </Link>
+        <Link to="/registry-list" className="home-link-tile" title={t('Image List', '이미지 목록')}>
+          <span className="home-link-icon" aria-hidden>🐳</span>
+          <span className="home-link-label">{t('Image List', '이미지 목록')}</span>
+        </Link>
+        <Link to="/compose-list" className="home-link-tile" title={t('Compose Files', '컴포즈 파일')}>
+          <span className="home-link-icon" aria-hidden>📦</span>
+          <span className="home-link-label">{t('Compose Files', '컴포즈 파일')}</span>
+        </Link>
       </div>
 
       {stats.error == null && (
         <div className="registry-stats">
-          <h2>📊 Registry Statistics</h2>
+          <h2><span className="registry-stats-title-icon" aria-hidden>📊</span> {t('Registry Statistics', '레지스트리 통계')}</h2>
           {stats.loading ? (
-            <div className="stats-loading"><p>Loading statistics...</p></div>
+            <div className="stats-loading"><p>{t('Loading...', '불러오는 중...')}</p></div>
           ) : (
             <div className="stats-grid">
               <div className="stat-item">
+                <span className="stat-icon" aria-hidden>📦</span>
                 <div className="stat-number">{stats.totalImages}</div>
-                <div className="stat-label">Total Images</div>
+                <div className="stat-label">{t('Images', '이미지')}</div>
               </div>
               <div className="stat-item">
+                <span className="stat-icon" aria-hidden>💾</span>
                 <div className="stat-number">{stats.estimatedSize}</div>
-                <div className="stat-label">Estimated Size</div>
+                <div className="stat-label">{t('Size', '용량')}</div>
               </div>
               <div className="stat-item">
+                <span className="stat-icon" aria-hidden>🏷️</span>
                 <div className="stat-number">{stats.totalTags}</div>
-                <div className="stat-label">Total Tags</div>
+                <div className="stat-label">{t('Tags', '태그')}</div>
               </div>
               <div className="stat-item">
+                <span className="stat-icon" aria-hidden>📂</span>
                 <div className="stat-number">{stats.largestImage}</div>
-                <div className="stat-label">Largest Repository</div>
+                <div className="stat-label">{t('Largest Repo', '최대 저장소')}</div>
               </div>
             </div>
           )}
         </div>
       )}
 
-      <div className="section">
-        <h2>Registry Resources</h2>
-        <p>View Docker images and download compose files:</p>
-        <div className="section-actions">
-          <Link to="/registry-list" className="btn">View Image List</Link>
-          <Link to="/compose-list" className="btn btn-secondary">Docker Compose Files</Link>
+      <div className="registry-url-box">
+        <span className="registry-url-label">
+          <span className="registry-url-icon" aria-hidden>🔗</span>
+          <strong>{t('Registry URL', '레지스트리 URL')}</strong>
+        </span>
+        <div className="registry-url-copy">
+          <code className="registry-url-value">{registryUrl}</code>
+          <button type="button" className="btn-copy" onClick={copyRegistryUrl}>
+            {COPY_LABELS[copyKey][lang]}
+          </button>
         </div>
       </div>
-    </>
+    </div>
   );
 }

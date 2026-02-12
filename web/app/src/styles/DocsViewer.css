@@ -38,13 +38,13 @@
 }
 
 .doc-lang-btn:hover {
-  border-color: #667eea;
-  color: #667eea;
+  border-color: #0369a1;
+  color: #0369a1;
 }
 
 .doc-lang-btn.active {
-  border-color: #667eea;
-  background: #667eea;
+  border-color: #0369a1;
+  background: #0369a1;
   color: #fff;
 }
 
@@ -67,7 +67,7 @@
 
 .doc-select:focus {
   outline: none;
-  border-color: #667eea;
+  border-color: #0369a1;
 }
 
 .markdown-wrap {
@@ -147,4 +147,100 @@
   color: #e2e8f0;
   font-size: inherit;
   word-break: normal;
+}
+
+.markdown-body a {
+  color: #0369a1;
+}
+
+.markdown-body a:hover {
+  text-decoration: underline;
+}
+
+.markdown-body blockquote {
+  margin: 1em 0;
+  padding: 0.5em 1em;
+  border-left: 4px solid #0369a1;
+  background: #f8f9fa;
+  color: #495057;
+}
+
+/* Dark theme: 문서 영역 */
+[data-theme="dark"] .app-main-inner .doc-select {
+  background: #252536;
+  border-color: #3f3f5c;
+  color: #e2e2e8;
+}
+
+[data-theme="dark"] .app-main-inner .doc-select:focus {
+  border-color: #38bdf8;
+}
+
+[data-theme="dark"] .app-main-inner .doc-select option {
+  background: #252536;
+  color: #e2e2e8;
+}
+
+[data-theme="dark"] .app-main-inner .markdown-wrap {
+  background: #252536;
+  border-color: #3f3f5c;
+}
+
+[data-theme="dark"] .app-main-inner .markdown-body {
+  color: #e2e2e8;
+}
+
+[data-theme="dark"] .app-main-inner .markdown-body h1,
+[data-theme="dark"] .app-main-inner .markdown-body h2,
+[data-theme="dark"] .app-main-inner .markdown-body h3,
+[data-theme="dark"] .app-main-inner .markdown-body h4 {
+  color: #e2e2e8;
+  border-bottom-color: #3f3f5c;
+}
+
+[data-theme="dark"] .app-main-inner .markdown-body hr {
+  border-top-color: #3f3f5c;
+}
+
+[data-theme="dark"] .app-main-inner .markdown-body code {
+  background: #1e1e2e;
+  border-color: #3f3f5c;
+  color: #f472b6;
+}
+
+[data-theme="dark"] .app-main-inner .markdown-body pre {
+  background: #1e1e2e;
+  border: 1px solid #3f3f5c;
+}
+
+[data-theme="dark"] .app-main-inner .markdown-body pre code {
+  color: #e2e8f0;
+}
+
+[data-theme="dark"] .app-main-inner .markdown-body a {
+  color: #7dd3fc;
+}
+
+[data-theme="dark"] .app-main-inner .markdown-body a:hover {
+  color: #bae6fd;
+}
+
+[data-theme="dark"] .app-main-inner .markdown-body blockquote {
+  background: #1e1e2e;
+  border-left-color: #38bdf8;
+  color: #c4c8d4;
+}
+
+[data-theme="dark"] .app-main-inner .markdown-body table {
+  border-color: #3f3f5c;
+}
+
+[data-theme="dark"] .app-main-inner .markdown-body th,
+[data-theme="dark"] .app-main-inner .markdown-body td {
+  border-color: #3f3f5c;
+  color: #e2e2e8;
+}
+
+[data-theme="dark"] .app-main-inner .markdown-body strong {
+  color: #e2e2e8;
 }

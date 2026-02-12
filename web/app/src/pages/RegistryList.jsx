@@ -5,10 +5,12 @@ import {
   downloadFile,
   buildCommands,
 } from '../utils/registry';
-import BackLink from '../components/BackLink';
+import { useLang } from '../context/LangContext';
 import '../styles/RegistryList.css';
 
 export default function RegistryList() {
+  const { lang } = useLang();
+  const t = (en, ko) => (lang === 'en' ? en : ko);
   const [repos, setRepos] = useState([]);
   const [selectedTags, setSelectedTags] = useState({});
   const [loading, setLoading] = useState(true);
@@ -90,7 +92,7 @@ export default function RegistryList() {
       const content = reconstructDockerfile(config, repoName, tag);
       downloadFile(content, 'Dockerfile');
     } catch (err) {
-      alert(`Error downloading Dockerfile: ${err.message}`);
+      alert(lang === 'en' ? `Error downloading Dockerfile: ${err.message}` : `Dockerfile 다운로드 오류: ${err.message}`);
     }
   };
 
@@ -102,41 +104,30 @@ export default function RegistryList() {
   const copyCommands = (repoName) => {
     const tag = getTag(repoName);
     const line = `docker pull ${REGISTRY_HOST}/${repoName}:${tag}`;
-    navigator.clipboard.writeText(line).then(() => alert('✅ Commands copied to clipboard!'));
+    navigator.clipboard.writeText(line).then(() => alert(lang === 'en' ? '✅ Commands copied to clipboard!' : '✅ 명령이 클립보드에 복사되었습니다!'));
   };
 
   const copyAllCommands = (repoName) => {
     const tag = getTag(repoName);
-    navigator.clipboard.writeText(buildCommands(repoName, tag)).then(() => alert('✅ Commands copied to clipboard!'));
+    navigator.clipboard.writeText(buildCommands(repoName, tag)).then(() => alert(lang === 'en' ? '✅ Commands copied to clipboard!' : '✅ 명령이 클립보드에 복사되었습니다!'));
   };
 
-  const deleteRepository = async (repoName) => {
-    if (!window.confirm(`⚠️ Delete repository "${repoName}"? This cannot be undone.`)) return;
+  const deleteTag = async (repoName, tag) => {
+    if (!window.confirm(lang === 'en' ? `⚠️ Delete tag "${repoName}:${tag}" only? This cannot be undone.` : `⚠️ 태그 "${repoName}:${tag}"만 삭제할까요? 되돌릴 수 없습니다.`)) return;
     setDeleting(repoName);
     try {
-      const tagsRes = await fetch(`/api/v2/${repoName}/tags/list`);
-      if (!tagsRes.ok) throw new Error(tagsRes.status);
-      const { tags } = await tagsRes.json();
-      if (!tags || tags.length === 0) {
-        alert('No tags to delete. Run Garbage Collection to clean up.');
-        setDeleting(null);
-        return;
-      }
-      let deleted = 0;
-      for (const tag of tags) {
-        const mRes = await fetch(`/api/v2/${repoName}/manifests/${tag}`, {
-          headers: { Accept: 'application/vnd.docker.distribution.manifest.v2+json' },
-        });
-        const digest = mRes.headers.get('docker-content-digest');
-        if (digest) {
-          const delRes = await fetch(`/api/v2/${repoName}/manifests/${digest}`, { method: 'DELETE' });
-          if (delRes.ok || delRes.status === 202) deleted++;
-        }
-      }
-      alert(`Deleted ${deleted} tag(s). Run Garbage Collection to free disk space.`);
-      setTimeout(loadRepositories, 2000);
+      const mRes = await fetch(`/api/v2/${repoName}/manifests/${tag}`, {
+        headers: { Accept: 'application/vnd.docker.distribution.manifest.v2+json' },
+      });
+      if (!mRes.ok) throw new Error(mRes.status);
+      const digest = mRes.headers.get('docker-content-digest');
+      if (!digest) throw new Error('Manifest digest not found');
+      const delRes = await fetch(`/api/v2/${repoName}/manifests/${digest}`, { method: 'DELETE' });
+      if (!delRes.ok && delRes.status !== 202) throw new Error(delRes.status);
+      alert(lang === 'en' ? `Tag "${tag}" deleted. Run Garbage Collection to free disk space.` : `태그 "${tag}"가 삭제되었습니다. 디스크 정리를 위해 Garbage Collection을 실행하세요.`);
+      setTimeout(loadRepositories, 500);
     } catch (err) {
-      alert(`Delete failed: ${err.message}`);
+      alert(lang === 'en' ? `Delete failed: ${err.message}` : `삭제 실패: ${err.message}`);
     } finally {
       setDeleting(null);
     }
@@ -144,12 +135,12 @@ export default function RegistryList() {
 
   const runGC = () => {
     const cmd = 'docker exec registry registry garbage-collect /etc/docker/registry/config.yml';
-    alert(`Run Garbage Collection:\n\n${cmd}`);
+    alert(lang === 'en' ? `Run Garbage Collection:\n\n${cmd}` : `가비지 컬렉션 실행:\n\n${cmd}`);
     navigator.clipboard.writeText(cmd).catch(() => {});
   };
 
-  if (loading) return <div className="loading">Loading repositories...</div>;
-  if (error) return <div className="error"><strong>Error:</strong> {error}</div>;
+  if (loading) return <div className="loading">{t('Loading repositories...', '저장소 불러오는 중...')}</div>;
+  if (error) return <div className="error"><strong>{t('Error:', '오류:')}</strong> {error}</div>;
 
   return (
     <>
@@ -157,19 +148,19 @@ export default function RegistryList() {
         <div className="search-box">
           <input
             type="text"
-            placeholder="🔍 Search repositories..."
+            placeholder={t('🔍 Search repositories...', '🔍 저장소 검색...')}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
           <div className="search-stats">
-            <span id="searchCount">{filteredRepos.length}</span> / <span id="totalCount">{repos.length}</span> repositories
+            <span id="searchCount">{filteredRepos.length}</span> / <span id="totalCount">{repos.length}</span> {t('repositories', '저장소')}
           </div>
         </div>
       </div>
 
       <div className="top-controls">
         <div className="control-buttons">
-          <button type="button" className="refresh-btn-icon" onClick={() => loadRepositories()} title="Refresh">
+          <button type="button" className="refresh-btn-icon" onClick={() => loadRepositories()} title={t('Refresh', '새로고침')}>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M23 4v6h-6" /><path d="M1 20v-6h6" />
               <path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15" />
@@ -187,7 +178,7 @@ export default function RegistryList() {
 
       <div id="repoList" className="repo-list">
         {filteredRepos.length === 0 ? (
-          <div className="no-repos">No repositories found.</div>
+          <div className="no-repos">{t('No repositories found.', '저장소가 없습니다.')}</div>
         ) : (
           filteredRepos.map((repo) => (
             <div key={repo.name} className="repo-card">
@@ -211,11 +202,11 @@ export default function RegistryList() {
                   <button
                     type="button"
                     className="delete-btn"
-                    onClick={() => deleteRepository(repo.name)}
+                    onClick={() => deleteTag(repo.name, getTag(repo.name))}
                     disabled={deleting === repo.name}
-                    title="Delete Repository"
+                    title={t('Delete this tag only', '이 태그만 삭제')}
                   >
-                    {deleting === repo.name ? '...' : '🗑️ Delete'}
+                    {deleting === repo.name ? '...' : `🗑️ ${t('Delete', '삭제')}`}
                   </button>
                 </div>
               </div>
@@ -227,7 +218,7 @@ export default function RegistryList() {
                   </button>
                   <button type="button" className="command-btn" onClick={() => showCommands(repo.name)}>
                     <span className="btn-icon">💻</span>
-                    <span className="btn-text">Commands</span>
+                    <span className="btn-text">{t('Commands', '명령어')}</span>
                   </button>
                 </div>
               </div>
@@ -246,25 +237,23 @@ export default function RegistryList() {
         >
           <div className="command-modal-content">
             <div className="command-modal-header">
-              <h3>💻 Download Commands</h3>
+              <h3>💻 {t('Download Commands', '다운로드 명령어')}</h3>
               <button type="button" className="command-modal-close" onClick={() => setCommandsModal(null)}>×</button>
             </div>
             <div className="command-modal-body">
               <pre className="command-code">{commandsModal.commands}</pre>
               <div className="command-actions">
                 <button type="button" className="copy-btn" onClick={() => copyCommands(commandsModal.repoName)}>
-                  📋 Copy Commands
+                  📋 {t('Copy Commands', '명령어 복사')}
                 </button>
                 <button type="button" className="copy-btn" onClick={() => copyAllCommands(commandsModal.repoName)}>
-                  📋 Copy All
+                  📋 {t('Copy All', '전체 복사')}
                 </button>
               </div>
             </div>
           </div>
         </div>
       )}
-
-      <BackLink />
     </>
   );
 }

@@ -5,12 +5,14 @@ import {
   downloadBlob,
   sortWithPinnedFirst,
 } from '../utils/compose';
-import BackLink from '../components/BackLink';
+import { useLang } from '../context/LangContext';
 import '../styles/ComposeList.css';
 
 const TOAST_DURATION_MS = 3000;
 
 export default function ComposeList() {
+  const { lang } = useLang();
+  const t = (en, ko) => (lang === 'en' ? en : ko);
   const [allFiles, setAllFiles] = useState([]);
   const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(true);
@@ -28,14 +30,14 @@ export default function ComposeList() {
       .then((html) => {
         const list = parseComposeFilesFromHtml(html, baseUrl);
         if (list.length === 0 && html.includes('<!')) {
-          setError('Compose file list could not be read. The server may have returned the app page instead of the /docker/ directory.');
+          setError('list_unreadable');
         } else {
           setError(null);
         }
         setAllFiles(list);
       })
       .catch((err) => {
-        setError('Error loading compose files. Make sure the /docker directory is mounted and accessible.');
+        setError('load_failed');
         setAllFiles([]);
       })
       .finally(() => setLoading(false));
@@ -60,9 +62,9 @@ export default function ComposeList() {
       if (!r.ok) throw new Error('Download failed');
       const blob = await r.blob();
       downloadBlob(blob, filename);
-      showToast(`Downloaded: ${filename}`, 'success');
+      showToast(lang === 'en' ? `Downloaded: ${filename}` : `다운로드됨: ${filename}`, 'success');
     } catch {
-      showToast('Error downloading file', 'error');
+      showToast(t('Error downloading file', '파일 다운로드 실패'), 'error');
     }
   };
 
@@ -73,19 +75,24 @@ export default function ComposeList() {
       const content = await r.text();
       setViewModal({ filename, content });
     } catch {
-      showToast('Error loading file', 'error');
+      showToast(t('Error loading file', '파일 불러오기 실패'), 'error');
     }
   };
 
   const copyContent = (text) => {
     navigator.clipboard
       .writeText(text)
-      .then(() => showToast('Content copied!', 'success'))
-      .catch(() => showToast('Copy failed', 'error'));
+      .then(() => showToast(t('Content copied!', '내용이 복사되었습니다!'), 'success'))
+      .catch(() => showToast(t('Copy failed', '복사 실패'), 'error'));
   };
 
-  if (loading) return <div className="loading">Loading compose files...</div>;
-  if (error && allFiles.length === 0) return <div className="error">{error}</div>;
+  const errorMessages = {
+    list_unreadable: t('Compose file list could not be read. The server may have returned the app page instead of the /docker/ directory.', '컴포즈 파일 목록을 읽을 수 없습니다. 서버가 /docker/ 디렉터리 대신 앱 페이지를 반환했을 수 있습니다.'),
+    load_failed: t('Error loading compose files. Make sure the /docker directory is mounted and accessible.', '컴포즈 파일을 불러오는 데 실패했습니다. /docker 디렉터리가 마운트되어 있는지 확인하세요.'),
+  };
+
+  if (loading) return <div className="loading">{t('Loading compose files...', '컴포즈 파일 불러오는 중...')}</div>;
+  if (error && allFiles.length === 0) return <div className="error">{errorMessages[error] || error}</div>;
 
   return (
     <>
@@ -93,22 +100,22 @@ export default function ComposeList() {
         <div className="search-box">
           <input
             type="text"
-            placeholder="🔍 Search compose files..."
+            placeholder={t('🔍 Search compose files...', '🔍 컴포즈 파일 검색...')}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
           <div className="search-stats">
-            {filteredFiles.length} / {allFiles.length} files
+            {filteredFiles.length} / {allFiles.length} {t('files', '파일')}
           </div>
         </div>
         <div className="env-notice">
-          ⚠️ Create a <strong>.env</strong> file and set required environment variables before use.
+          ⚠️ {t('Create a .env file and set required environment variables before use.', '사용 전 .env 파일을 만들고 필요한 환경 변수를 설정하세요.')}
         </div>
       </div>
 
       <div id="composeList" className="compose-list">
         {filteredFiles.length === 0 ? (
-          <div className="no-results">No compose files found matching your search.</div>
+          <div className="no-results">{t('No compose files found matching your search.', '검색 결과에 맞는 컴포즈 파일이 없습니다.')}</div>
         ) : (
           filteredFiles.map((file) => (
             <div key={file.name} className="compose-card">
@@ -123,11 +130,11 @@ export default function ComposeList() {
                 <div className="compose-actions">
                   <button type="button" className="compose-download-btn" onClick={() => downloadCompose(file.url, file.name)}>
                     <span className="btn-icon">⬇</span>
-                    <span className="btn-text">Download</span>
+                    <span className="btn-text">{t('Download', '다운로드')}</span>
                   </button>
                   <button type="button" className="compose-view-btn" onClick={() => viewCompose(file.url, file.name)}>
                     <span className="btn-icon">👁</span>
-                    <span className="btn-text">View</span>
+                    <span className="btn-text">{t('View', '보기')}</span>
                   </button>
                 </div>
               </div>
@@ -152,9 +159,9 @@ export default function ComposeList() {
               <pre><code>{viewModal.content}</code></pre>
             </div>
             <div className="modal-footer">
-              <button type="button" className="btn btn-secondary" onClick={() => setViewModal(null)}>Close</button>
+              <button type="button" className="btn btn-secondary" onClick={() => setViewModal(null)}>{t('Close', '닫기')}</button>
               <button type="button" className="btn btn-primary" onClick={() => copyContent(viewModal.content)}>
-                Copy Content
+                {t('Copy Content', '내용 복사')}
               </button>
             </div>
           </div>
@@ -166,8 +173,6 @@ export default function ComposeList() {
           {toast.msg}
         </div>
       )}
-
-      <BackLink />
     </>
   );
 }

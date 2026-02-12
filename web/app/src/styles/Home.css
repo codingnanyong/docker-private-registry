@@ -1,0 +1,140 @@
+/* Home: Registry URL – 통계 아래, 컴팩트 바 */
+.home-page .registry-url-box {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 16px;
+  padding: 14px 18px;
+  margin: 24px 0 0 0;
+  border-radius: 10px;
+}
+
+.home-page .registry-url-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.home-page .registry-url-icon {
+  font-size: 1.1em;
+  line-height: 1;
+}
+
+.home-page .registry-url-copy {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  min-width: 0;
+}
+
+.home-page .registry-url-value {
+  font-size: 0.95em;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  flex: 1;
+  min-width: 0;
+  font-family: ui-monospace, monospace;
+  letter-spacing: 0.02em;
+}
+
+.home-page .registry-url-copy .btn-copy {
+  flex-shrink: 0;
+  padding: 6px 12px;
+  font-size: 0.85rem;
+}
+
+/* Home: Registry URL – 라이트 모드 밝게 */
+html:not([data-theme="dark"]) .home-page .registry-url-box {
+  background: #e0f2fe;
+  color: #0c4a6e;
+  border: 1px solid #bae6fd;
+}
+
+html:not([data-theme="dark"]) .home-page .registry-url-copy {
+  color: #0c4a6e;
+}
+
+html:not([data-theme="dark"]) .home-page .registry-url-value {
+  color: #0c4a6e;
+}
+
+html:not([data-theme="dark"]) .home-page .registry-url-copy .btn-copy {
+  background: #0284c7;
+  color: white;
+}
+
+html:not([data-theme="dark"]) .home-page .registry-url-copy .btn-copy:hover {
+  background: #0369a1;
+}
+
+html:not([data-theme="dark"]) .home-page .registry-stats {
+  background: #f8fafc;
+  color: #0f172a;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+}
+
+html:not([data-theme="dark"]) .home-page .registry-stats h2 {
+  color: #0f172a;
+}
+
+.home-page .registry-stats {
+  margin-bottom: 20px;
+}
+
+.home-page .registry-stats-title-icon {
+  display: inline-block;
+  margin-right: 6px;
+  font-size: 1em;
+  vertical-align: -0.15em;
+}
+
+html:not([data-theme="dark"]) .home-page .stat-item {
+  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+  border: 1px solid #bae6fd;
+  color: #0c4a6e;
+  border-radius: 10px;
+  box-shadow: 0 1px 3px rgba(14, 165, 233, 0.08);
+}
+
+html:not([data-theme="dark"]) .home-page .stat-number {
+  color: #0369a1;
+}
+
+html:not([data-theme="dark"]) .home-page .stat-label {
+  color: #0c4a6e;
+  opacity: 0.9;
+}
+
+html:not([data-theme="dark"]) .home-page .stats-loading {
+  color: #475569;
+}
+
+/* Statistics 아이콘화 */
+.home-page .stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.home-page .stat-icon {
+  display: block;
+  font-size: 1.75rem;
+  line-height: 1;
+  margin-bottom: 2px;
+}
+
+.home-page .stat-number {
+  font-size: 1.5em;
+  font-weight: 700;
+  margin-bottom: 0;
+}
+
+.home-page .stat-label {
+  font-size: 0.7em;
+  opacity: 0.9;
+  text-transform: uppercase;
+}
